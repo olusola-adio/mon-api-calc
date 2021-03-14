@@ -6,11 +6,11 @@ variables:
 resources:
   repositories:
   - repository: self
-  - repository: dfc-devops
+  - repository: mon-devops
     type: github
-    name: SkillsFundingAgency/dfc-devops
-    ref: refs/tags/v1.11.2
-    endpoint: 'GitHub (ESFA)'
+    name: olusola-adio/mon-devops
+    endpoint: 'olusola-adio'
+    ref: refs/tags/v1.11.1
 
 stages:
 - stage: Build
