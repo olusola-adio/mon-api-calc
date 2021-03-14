@@ -1,5 +1,5 @@
 variables:
-    SolutionBaseName: '__SolutionBaseName__'
+    SolutionBaseName: 'Mon.Calculator'
     BuildPlatform: 'any cpu'
     BuildConfiguration: 'release'
 
