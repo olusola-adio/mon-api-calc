@@ -18,10 +18,7 @@ stages:
   jobs:
   - job: BuildTestAndAnalyze
     pool:
-      name: NCS - CI and CD
-      demands:
-      - msbuild
-      - visualstudio
+      vmImage: vs2017-win2016 
     steps:
     - template: AzureDevOpsTemplates\Build\StepTemplates\dfc-dotnetcore-build-sonar.yml@dfc-devops
       parameters:
