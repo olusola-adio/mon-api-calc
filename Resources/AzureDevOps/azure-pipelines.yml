@@ -2,6 +2,7 @@ variables:
     SolutionBaseName: 'Mon.Calculator'
     BuildPlatform: 'any cpu'
     BuildConfiguration: 'release'
+    ArmTemplateRoot: "$(System.DefaultWorkingDirectory)/Resources/ArmTemplates"
 
 resources:
   repositories:
