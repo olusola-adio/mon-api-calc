@@ -1,0 +1,27 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "appSharedResourceGroup": {
+      "value": "dfc-dev-app-sharedresources-rg"
+    },
+    "Environment": {
+      "value": "FOO"
+    },
+    "enableAlerts": {
+      "value": false
+    },
+    "appSharedStorageAccountName": {
+      "value": "dfcdevappsharedstr"
+    },
+    "ExceptionCountThreshold": {
+      "value": "0"
+    },
+    "MemoryPercentageThreshold": {
+      "value": "0"
+    },
+    "CPUPercentageThreshold": {
+      "value": "0"
+    }
+  }
+}

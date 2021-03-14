@@ -16,7 +16,18 @@ stages:
 - stage: Build
   displayName: Build, Test and Analyze
   jobs:
+  - job: TestArmTemplates
+    displayName: "Test ARM Template"
+    pool:
+      vmImage: vs2017-win2016 
+    steps:
+    - template: /AzureDevOpsTemplates/Build/StepTemplates/mon-arm-build.yml@mon-devops
+      parameters:
+        ArmTemplateRoot: '${{ variables.ArmTemplateRoot }}'
+        SolutionBaseName: '${{ variables.SolutionBaseName }}'
+
   - job: BuildTestAndAnalyze
+    displayName: "Build and test application"
     pool:
       vmImage: vs2017-win2016 
     steps:
