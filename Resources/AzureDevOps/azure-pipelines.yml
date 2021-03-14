@@ -20,7 +20,7 @@ stages:
     pool:
       vmImage: vs2017-win2016 
     steps:
-    - template: AzureDevOpsTemplates\Build\StepTemplates\mon-dotnetcore-build-sonar.yml@mon-devops
+    - template: AzureDevOpsTemplates\Build\StepTemplates\mon-dotnetcore-build.yml@mon-devops
       parameters:
         SolutionBaseName: $(SolutionBaseName)
         BuildPlatform: $(BuildPlatform)
