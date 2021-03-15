@@ -1,0 +1,8 @@
+{
+	"profiles": {
+		"Mon.Calculator": {
+			"commandName": "Project",
+			"commandLineArgs": "host start --port 7072"
+		}
+	}
+}
