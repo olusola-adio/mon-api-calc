@@ -37,3 +37,5 @@ variables:
   value: mon-dev-app-sharedresources-rg
 - name: appSharedStorageAccountName
   value: mondevappsharedstr
+- name: apimServiceName
+  value: mon-dev-shared-apim
