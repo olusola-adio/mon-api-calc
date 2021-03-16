@@ -52,7 +52,7 @@
     "ActionGroupName": "[concat('mon-', tolower(parameters('Environment')), '-app-sharedresources-actgrp')]"
   },
   "resources": [
-        {
+    {
       "name": "[parameters('apimLoggerName')]",
       "type": "Microsoft.Resources/deployments",
       "resourceGroup": "[parameters('apimResourceGroup')]",
@@ -163,9 +163,15 @@
       }
     },
     {
-      "apiVersion": "2017-05-10",
+
       "name": "[variables('functionAppName')]",
-      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2018-11-01",
+      "type": "Microsoft.Web/sites",
+      "location": "[resourceGroup().location]",
+      "kind": "functionapp",
+      "identity": {
+        "type": "SystemAssigned"
+      },
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -184,12 +190,6 @@
           },
           "appServiceType": {
             "value": "functionapp"
-          },
-          "deployStagingSlot": {
-            "value": true
-          },
-          "clientAffinity": {
-            "value": true
           },
           "appServiceAppSettings": {
             "value": [
