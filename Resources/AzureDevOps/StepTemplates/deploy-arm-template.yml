@@ -9,20 +9,24 @@ parameters:
   Location: 'West Europe'
   ArmOutputVariableName: 'ARMOutputs'
   ArmTemplateFolder: ''
+  SetTagsScriptFilePath: '$(System.DefaultWorkingDirectory)\Set-EsfaResourceGroupTags.ps1'
 
 steps:
 - checkout: mon-devops
   path: 's/mon-devops/'
-  
-- powershell: |
-    Invoke-WebRequest -Uri "${{ parameters.SetEsfaResourceGroupTagsScript }}" -OutFile "${{ variables['System.DefaultWorkingDirectory']}}/Set-EsfaResourceGroup.ps1"
-  displayName: "Download scripts from mon-devops repo"
+
+- task: PowerShell@2
+  name: DownloadSetEsfaResourceGroupTagsScript
+  displayName: 'Download Set-EsfaResourceGroupTags script'
+  inputs:
+    targetType: 'inline'
+    script: Invoke-WebRequest -Uri ${{ parameters.SetEsfaResourceGroupTagsScript }} -OutFile ${{ parameters.SetTagsScriptFilePath }}
 
 - task: AzurePowerShell@3
   displayName:  "Create resource groups with tags"
   inputs:
     azureSubscription: '${{ parameters.AzureSubscription }}'
-    ScriptPath: "${{ variables['System.DefaultWorkingDirectory'] }}/Set-EsfaResourceGroup.ps1"
+    ScriptPath: ${{ parameters.SetTagsScriptFilePath }}
     ScriptArguments: '-ResourceGroupName "${{ parameters.ResourceGroup }}" -Environment "${{ parameters.EnvironmentTag }}" -ParentBusiness "${{ parameters.ParentBusiness }}" -ServiceOffering "${{ parameters.ServiceOffering }}" -Verbose'
     azurePowerShellVersion: LatestVersion
 
