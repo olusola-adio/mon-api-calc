@@ -27,7 +27,7 @@
       "value": "LMI-logger"
     },
     "apimResourceGroup": {
-      "value": "dfc-test-template-rg"
+      "value": "mon-test-template-rg"
     },
     "apimServiceName": {
       "value": "an-apim-instance"
