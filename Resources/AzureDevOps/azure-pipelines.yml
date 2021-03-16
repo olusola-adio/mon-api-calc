@@ -13,6 +13,9 @@ resources:
     endpoint: 'olusola-adio'
     ref: refs/tags/v1.11.1
 
+pool:
+  vmImage: vs2017-win2016 
+
 stages:
 - stage: Build
   displayName: Build, Test and Analyze
