@@ -25,6 +25,21 @@
     },
     "MemoryPercentageThreshold": {
       "type": "string"
+    },
+    "apimServiceName": {
+      "type": "string"
+    },
+    "apimProductName": {
+      "type": "string"
+    },
+    "apimApiName": {
+      "type": "string"
+    },
+    "apimLoggerName": {
+      "type": "string"
+    },
+    "apimResourceGroup": {
+      "type": "string"
     }
   },
   "variables": {
@@ -37,6 +52,114 @@
     "ActionGroupName": "[concat('mon-', tolower(parameters('Environment')), '-app-sharedresources-actgrp')]"
   },
   "resources": [
+        {
+      "name": "[parameters('apimLoggerName')]",
+      "type": "Microsoft.Resources/deployments",
+      "resourceGroup": "[parameters('apimResourceGroup')]",
+      "apiVersion": "2017-05-10",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'APIM/apim-logger.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "apimServiceName": {
+            "value": "[parameters('apimServiceName')]"
+          },
+          "productDisplayName": {
+            "value": "[parameters('apimProductName')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "[parameters('apimProductName')]",
+      "type": "Microsoft.Resources/deployments",
+      "resourceGroup": "[parameters('apimResourceGroup')]",
+      "apiVersion": "2017-05-10",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'APIM/apim-product.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "allowAnonymousAccess": {
+            "value": false
+          },
+          "apimServiceName": {
+            "value": "[parameters('apimServiceName')]"
+          },
+          "productDisplayName": {
+            "value": "[parameters('apimProductName')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "[parameters('apimApiName')]",
+      "type": "Microsoft.Resources/deployments",
+      "resourceGroup": "[parameters('apimResourceGroup')]",
+      "apiVersion": "2017-05-10",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'APIM/apim-api.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "apimLoggerName": {
+            "value": "[parameters('apimLoggerName')]"
+          },
+          "apimProductInstanceName": {
+            "value": "[parameters('apimProductName')]"
+          },
+          "apimServiceName": {
+            "value": "[parameters('apimServiceName')]"
+          },
+          "apiName": {
+            "value": "[parameters('apimApiName')]"
+          }
+        }
+      },
+      "dependsOn": [
+        "[parameters('apimProductName')]",
+        "[parameters('apimLoggerName')]"
+      ]
+    },
+    {
+      "apiVersion": "2017-05-10",
+      "name": "[variables('appServicePlanName')]",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('buildingBlocksDfcBaseUrl'), 'app-service-plan.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "appServicePlanName": {
+            "value": "[variables('appServicePlanName')]"
+          },
+          "aseHostingEnvironmentName": {
+            "value": "[parameters('aseHostingEnvironmentName')]"
+          },
+          "aseResourceGroup": {
+            "value": "[parameters('aseResourceGroup')]"
+          },
+          "aspSize": {
+            "value": "[parameters('aspSize')]"
+          },
+          "aspInstances": {
+            "value": "[parameters('aspInstances')]"
+          },
+          "nonASETier": {
+            "value": "[parameters('aspTier')]"
+          }
+        }
+      }
+    },
     {
       "apiVersion": "2018-02-01",
       "name": "[variables('appServicePlanName')]",
