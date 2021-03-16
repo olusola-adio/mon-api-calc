@@ -52,82 +52,82 @@
     "ActionGroupName": "[concat('mon-', tolower(parameters('Environment')), '-app-sharedresources-actgrp')]"
   },
   "resources": [
-    {
-      "name": "[parameters('apimLoggerName')]",
-      "type": "Microsoft.Resources/deployments",
-      "resourceGroup": "[parameters('apimResourceGroup')]",
-      "apiVersion": "2017-05-10",
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'APIM/apim-logger.json')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "apimServiceName": {
-            "value": "[parameters('apimServiceName')]"
-          },
-          "productDisplayName": {
-            "value": "[parameters('apimProductName')]"
-          }
-        }
-      }
-    },
-    {
-      "name": "[parameters('apimProductName')]",
-      "type": "Microsoft.Resources/deployments",
-      "resourceGroup": "[parameters('apimResourceGroup')]",
-      "apiVersion": "2017-05-10",
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'APIM/apim-product.json')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "allowAnonymousAccess": {
-            "value": false
-          },
-          "apimServiceName": {
-            "value": "[parameters('apimServiceName')]"
-          },
-          "productDisplayName": {
-            "value": "[parameters('apimProductName')]"
-          }
-        }
-      }
-    },
-    {
-      "name": "[parameters('apimApiName')]",
-      "type": "Microsoft.Resources/deployments",
-      "resourceGroup": "[parameters('apimResourceGroup')]",
-      "apiVersion": "2017-05-10",
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'APIM/apim-api.json')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "apimLoggerName": {
-            "value": "[parameters('apimLoggerName')]"
-          },
-          "apimProductInstanceName": {
-            "value": "[parameters('apimProductName')]"
-          },
-          "apimServiceName": {
-            "value": "[parameters('apimServiceName')]"
-          },
-          "apiName": {
-            "value": "[parameters('apimApiName')]"
-          }
-        }
-      },
-      "dependsOn": [
-        "[parameters('apimProductName')]",
-        "[parameters('apimLoggerName')]"
-      ]
-    },
+    // {
+    //   "name": "[parameters('apimLoggerName')]",
+    //   "type": "Microsoft.Resources/deployments",
+    //   "resourceGroup": "[parameters('apimResourceGroup')]",
+    //   "apiVersion": "2017-05-10",
+    //   "properties": {
+    //     "mode": "Incremental",
+    //     "templateLink": {
+    //       "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'APIM/apim-logger.json')]",
+    //       "contentVersion": "1.0.0.0"
+    //     },
+    //     "parameters": {
+    //       "apimServiceName": {
+    //         "value": "[parameters('apimServiceName')]"
+    //       },
+    //       "productDisplayName": {
+    //         "value": "[parameters('apimProductName')]"
+    //       }
+    //     }
+    //   }
+    // },
+    // {
+    //   "name": "[parameters('apimProductName')]",
+    //   "type": "Microsoft.Resources/deployments",
+    //   "resourceGroup": "[parameters('apimResourceGroup')]",
+    //   "apiVersion": "2017-05-10",
+    //   "properties": {
+    //     "mode": "Incremental",
+    //     "templateLink": {
+    //       "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'APIM/apim-product.json')]",
+    //       "contentVersion": "1.0.0.0"
+    //     },
+    //     "parameters": {
+    //       "allowAnonymousAccess": {
+    //         "value": false
+    //       },
+    //       "apimServiceName": {
+    //         "value": "[parameters('apimServiceName')]"
+    //       },
+    //       "productDisplayName": {
+    //         "value": "[parameters('apimProductName')]"
+    //       }
+    //     }
+    //   }
+    // },
+    // {
+    //   "name": "[parameters('apimApiName')]",
+    //   "type": "Microsoft.Resources/deployments",
+    //   "resourceGroup": "[parameters('apimResourceGroup')]",
+    //   "apiVersion": "2017-05-10",
+    //   "properties": {
+    //     "mode": "Incremental",
+    //     "templateLink": {
+    //       "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'APIM/apim-api.json')]",
+    //       "contentVersion": "1.0.0.0"
+    //     },
+    //     "parameters": {
+    //       "apimLoggerName": {
+    //         "value": "[parameters('apimLoggerName')]"
+    //       },
+    //       "apimProductInstanceName": {
+    //         "value": "[parameters('apimProductName')]"
+    //       },
+    //       "apimServiceName": {
+    //         "value": "[parameters('apimServiceName')]"
+    //       },
+    //       "apiName": {
+    //         "value": "[parameters('apimApiName')]"
+    //       }
+    //     }
+    //   },
+    //   "dependsOn": [
+    //     "[parameters('apimProductName')]",
+    //     "[parameters('apimLoggerName')]"
+    //   ]
+    // },
     {
       "apiVersion": "2018-02-01",
       "name": "[variables('appServicePlanName')]",
@@ -173,52 +173,34 @@
         "type": "SystemAssigned"
       },
       "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[concat(variables('buildingBlocksDfcBaseUrl'), 'app-service.json')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "appServiceName": {
-            "value": "[variables('functionAppName')]"
-          },
-          "appServicePlanName": {
-            "value": "[variables('appServicePlanName')]"
-          },
-          "appServicePlanResourceGroup": {
-            "value": "[variables('appServicePlanResourceGroup')]"
-          },
-          "appServiceType": {
-            "value": "functionapp"
-          },
-          "appServiceAppSettings": {
-            "value": [
-              {
-                "name": "FUNCTIONS_EXTENSION_VERSION",
-                "value": "~3"
-              },
-              {
-                "name": "FUNCTIONS_WORKER_RUNTIME",
-                "value": "dotnet"
-              },
-              {
-                "name": "MSDEPLOY_RENAME_LOCKED_FILES",
-                "value": "1"
-              },
-              {
-                "name": "WEBSITE_RUN_FROM_PACKAGE",
-                "value": "1"
-              },
-              {
-                "name": "AzureWebJobsStorage",
-                "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('appSharedStorageAccountName'),';AccountKey=',listKeys(resourceId(parameters('appSharedResourceGroup'), 'Microsoft.Storage/storageAccounts', parameters('appSharedStorageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value, ';EndpointSuffix=core.windows.net')]"
-              },
-              {
-                "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                "value": "[reference(variables('functionAppInsightsName')).outputs.InstrumentationKey.value]"
-              }
-            ]
-          }
+        "httpsOnly": true,
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~3"
+            },
+            {
+              "name": "FUNCTIONS_WORKER_RUNTIME",
+              "value": "dotnet"
+            },
+            {
+              "name": "MSDEPLOY_RENAME_LOCKED_FILES",
+              "value": "1"
+            },
+            {
+              "name": "WEBSITE_RUN_FROM_PACKAGE",
+              "value": "1"
+            },
+            {
+              "name": "AzureWebJobsStorage",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('appSharedStorageAccountName'),';AccountKey=',listKeys(resourceId(parameters('appSharedResourceGroup'), 'Microsoft.Storage/storageAccounts', parameters('appSharedStorageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value, ';EndpointSuffix=core.windows.net')]"
+            },
+            {
+              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+              "value": "[reference(variables('functionAppInsightsName')).outputs.InstrumentationKey.value]"
+            }
+          ]
         }
       },
       "dependsOn": [
