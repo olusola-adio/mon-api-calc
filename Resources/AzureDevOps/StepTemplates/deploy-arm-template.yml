@@ -26,7 +26,7 @@ steps:
     ScriptArguments: '-ResourceGroupName "${{ parameters.ResourceGroup }}" -Environment "${{ parameters.EnvironmentTag }}" -ParentBusiness "${{ parameters.ParentBusiness }}" -ServiceOffering "${{ parameters.ServiceOffering }}" -Verbose'
     azurePowerShellVersion: LatestVersion
 
-- task: esfadevops.Tokenization.custom-build-task.Tokenization@0
+- task: Tokenization@2 
   displayName: 'Tokenization: Transform file parameters.json'
   inputs:
     SourcePath: '${{ parameters.ArmTemplateFolder }}'
