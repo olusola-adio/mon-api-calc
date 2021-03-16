@@ -38,3 +38,40 @@ stages:
         BuildPlatform: $(BuildPlatform)
         BuildConfiguration: $(BuildConfiguration)
         DotNetCoreVersion: '3.1.100'
+
+- stage: DeployToDevCalculatortApi
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  displayName: Deploy to DEV_API_CALCULATOR
+  variables:
+  - group: mon-shared-all
+  - group: mon-shared-dev
+  - group: mon-app-shared-all
+  - group: mon-app-shared-dev
+  - template: VariableTemplates\DevEnvironmentVariables.yml
+  
+  jobs:
+  - template: JobTemplates/deploy-environment.yml
+    parameters:
+      AzureSubscription: 'mon(cb5ab4a7-dd08-4be3-9d7e-9f68ae30f224)'
+      EnvironmentTag: '$(EnvironmentTag)'
+      ParentBusiness: '$(ParentBusiness)'
+      ServiceOffering: '$(ServiceOffering)'
+      ResourceGroup: $(ResourceGroup)
+      DfCDevopsPath: '$(Agent.BuildDirectory)/s/dfc-devops'
+      PackageFile:  "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.DeploymentPackages/${{ variables.SolutionBaseName }}.zip"
+      ArmTemplateFolder: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Resources.ArmTemplates/"
+      EnvironmentName: DEV_API_CALCULATOR
+      AppServiceName: '$(FunctionAppName)'
+      ApimLoggerName: "$(ApimLoggerName)"
+      ApimProductName: "$(ApimProductName)"
+      SharedResourceGroup: $(SharedResourceGroup)
+      ApimServiceName: $(ApimServiceName)
+      ApimProductInstanceName: $(ApimProductInstanceName)
+      ApiName: $(ApiName)
+      ApiId: $(ApiId)
+      FunctionAppDomain: $(FunctionAppDomain)
+      ApimApiName: $(ApimApiName)
+      SubscriptionPosturi: '$(SubscriptionPosturi)'
+      Apis:
+        -
+          - azureFunctionName: '${{ variables.FunctionAppName }}'
