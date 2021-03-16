@@ -15,14 +15,14 @@ steps:
   path: 's/mon-devops/'
   
 - powershell: |
-    Invoke-WebRequest -Uri "${{ parameters.SetEsfaResourceGroupTagsScript }}" -OutFile "${{ variables['System.DefaultWorkingDirectory']}}/Set-EsfaResourceGroupTags.ps1"
+    Invoke-WebRequest -Uri "${{ parameters.SetEsfaResourceGroupTagsScript }}" -OutFile "${{ variables['System.DefaultWorkingDirectory']}}/Set-EsfaResourceGroup.ps1"
   displayName: "Download scripts from mon-devops repo"
 
 - task: AzurePowerShell@3
   displayName:  "Create resource groups with tags"
   inputs:
     azureSubscription: '${{ parameters.AzureSubscription }}'
-    ScriptPath: "${{ variables['System.DefaultWorkingDirectory'] }}/Set-EsfaResourceGroupTags.ps1"
+    ScriptPath: "${{ variables['System.DefaultWorkingDirectory'] }}/Set-EsfaResourceGroup.ps1"
     ScriptArguments: '-ResourceGroupName "${{ parameters.ResourceGroup }}" -Environment "${{ parameters.EnvironmentTag }}" -ParentBusiness "${{ parameters.ParentBusiness }}" -ServiceOffering "${{ parameters.ServiceOffering }}" -Verbose'
     azurePowerShellVersion: LatestVersion
 
