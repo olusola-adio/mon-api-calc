@@ -57,7 +57,7 @@ stages:
       ParentBusiness: '$(ParentBusiness)'
       ServiceOffering: '$(ServiceOffering)'
       ResourceGroup: $(ResourceGroup)
-      DfCDevopsPath: '$(Agent.BuildDirectory)/s/dfc-devops'
+      DfCDevopsPath: '$(Agent.BuildDirectory)/s/mon-devops'
       PackageFile:  "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.DeploymentPackages/${{ variables.SolutionBaseName }}.zip"
       ArmTemplateFolder: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Resources.ArmTemplates/"
       EnvironmentName: DEV_API_CALCULATOR

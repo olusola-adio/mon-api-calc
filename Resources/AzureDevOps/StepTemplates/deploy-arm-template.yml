@@ -1,7 +1,7 @@
 parameters:
   AzureSubscription: ''
   DfCDevopsPath: ''
-  SetEsfaResourceGroupTagsScript: 'https://raw.githubusercontent.com/SkillsFundingAgency/dfc-devops/master/PSScripts/Set-EsfaResourceGroupTags.ps1'
+  SetEsfaResourceGroupTagsScript: 'https://raw.githubusercontent.com/olusola-adio/mon-devops/master/PSScripts/Set-EsfaResourceGroupTags.ps1'
   EnvironmentTag: ''
   ParentBusiness: ''
   ServiceOffering: ''
@@ -11,12 +11,12 @@ parameters:
   ArmTemplateFolder: ''
 
 steps:
-- checkout: dfc-devops
-  path: 's/dfc-devops/'
+- checkout: mon-devops
+  path: 's/mon-devops/'
   
 - powershell: |
     Invoke-WebRequest -Uri "${{ parameters.SetEsfaResourceGroupTagsScript }}" -OutFile "${{ variables['System.DefaultWorkingDirectory']}}/Set-EsfaResourceGroupTags.ps1"
-  displayName: "Download scripts from dfc-devops repo"
+  displayName: "Download scripts from mon-devops repo"
 
 - task: AzurePowerShell@3
   displayName:  "Create resource groups with tags"
