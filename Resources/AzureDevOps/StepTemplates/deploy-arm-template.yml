@@ -27,7 +27,7 @@ steps:
   inputs:
     azureSubscription: '${{ parameters.AzureSubscription }}'
     ScriptPath: ${{ parameters.SetTagsScriptFilePath }}
-    ScriptArguments: '-ResourceGroupName "${{ parameters.ResourceGroup }}" -Environment "${{ parameters.EnvironmentTag }}" -ParentBusiness "${{ parameters.ParentBusiness }}" -ServiceOffering "${{ parameters.ServiceOffering }}" -Verbose'
+    ScriptArguments: '-ResourceGroupName "${{ parameters.ResourceGroup }}" -Location "${{  parameters.Location  }}" -Environment "${{ parameters.EnvironmentTag }}" -ParentBusiness "${{ parameters.ParentBusiness }}" -ServiceOffering "${{ parameters.ServiceOffering }}" -Verbose'
     azurePowerShellVersion: LatestVersion
 
 - task: Tokenization@2 
