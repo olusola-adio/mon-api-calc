@@ -49,85 +49,86 @@
     "resourcePrefix": "[tolower(concat('mon-', tolower(parameters('Environment')), '-api-calc'))]",
     "functionAppName": "[concat(variables('ResourcePrefix'), '-fa')]",
     "functionAppInsightsName": "[concat(variables('resourcePrefix'), '-ai')]",
+    "apimApiName": "[concat(parameters('apimProductName'), '-', parameters('apimApiName'))]",
     "ActionGroupName": "[concat('mon-', tolower(parameters('Environment')), '-app-sharedresources-actgrp')]"
   },
   "resources": [
-    // {
-    //   "name": "[parameters('apimLoggerName')]",
-    //   "type": "Microsoft.Resources/deployments",
-    //   "resourceGroup": "[parameters('apimResourceGroup')]",
-    //   "apiVersion": "2017-05-10",
-    //   "properties": {
-    //     "mode": "Incremental",
-    //     "templateLink": {
-    //       "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'APIM/apim-logger.json')]",
-    //       "contentVersion": "1.0.0.0"
-    //     },
-    //     "parameters": {
-    //       "apimServiceName": {
-    //         "value": "[parameters('apimServiceName')]"
-    //       },
-    //       "productDisplayName": {
-    //         "value": "[parameters('apimProductName')]"
-    //       }
-    //     }
-    //   }
-    // },
-    // {
-    //   "name": "[parameters('apimProductName')]",
-    //   "type": "Microsoft.Resources/deployments",
-    //   "resourceGroup": "[parameters('apimResourceGroup')]",
-    //   "apiVersion": "2017-05-10",
-    //   "properties": {
-    //     "mode": "Incremental",
-    //     "templateLink": {
-    //       "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'APIM/apim-product.json')]",
-    //       "contentVersion": "1.0.0.0"
-    //     },
-    //     "parameters": {
-    //       "allowAnonymousAccess": {
-    //         "value": false
-    //       },
-    //       "apimServiceName": {
-    //         "value": "[parameters('apimServiceName')]"
-    //       },
-    //       "productDisplayName": {
-    //         "value": "[parameters('apimProductName')]"
-    //       }
-    //     }
-    //   }
-    // },
-    // {
-    //   "name": "[parameters('apimApiName')]",
-    //   "type": "Microsoft.Resources/deployments",
-    //   "resourceGroup": "[parameters('apimResourceGroup')]",
-    //   "apiVersion": "2017-05-10",
-    //   "properties": {
-    //     "mode": "Incremental",
-    //     "templateLink": {
-    //       "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'APIM/apim-api.json')]",
-    //       "contentVersion": "1.0.0.0"
-    //     },
-    //     "parameters": {
-    //       "apimLoggerName": {
-    //         "value": "[parameters('apimLoggerName')]"
-    //       },
-    //       "apimProductInstanceName": {
-    //         "value": "[parameters('apimProductName')]"
-    //       },
-    //       "apimServiceName": {
-    //         "value": "[parameters('apimServiceName')]"
-    //       },
-    //       "apiName": {
-    //         "value": "[parameters('apimApiName')]"
-    //       }
-    //     }
-    //   },
-    //   "dependsOn": [
-    //     "[parameters('apimProductName')]",
-    //     "[parameters('apimLoggerName')]"
-    //   ]
-    // },
+        {
+      "name": "[concat('apim-logger-', parameters('apimLoggerName'))]",
+      "type": "Microsoft.Resources/deployments",
+      "resourceGroup": "[parameters('apimResourceGroup')]",
+      "apiVersion": "2017-05-10",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'APIM/apim-logger.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "apimServiceName": {
+            "value": "[parameters('apimServiceName')]"
+          },
+          "productDisplayName": {
+            "value": "[parameters('apimProductName')]"
+          }
+        }
+      }
+    },
+        {
+      "name": "[concat('apim-product-', parameters('apimProductName'))]",
+      "type": "Microsoft.Resources/deployments",
+      "resourceGroup": "[parameters('apimResourceGroup')]",
+      "apiVersion": "2017-05-10",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'APIM/apim-product.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "allowAnonymousAccess": {
+            "value": false
+          },
+          "apimServiceName": {
+            "value": "[parameters('apimServiceName')]"
+          },
+          "productDisplayName": {
+            "value": "[parameters('apimProductName')]"
+          }
+        }
+      }
+    },
+        {
+      "name": "[concat('apim-api-', variables('apimApiName'))]",
+      "type": "Microsoft.Resources/deployments",
+      "resourceGroup": "[parameters('apimResourceGroup')]",
+      "apiVersion": "2017-05-10",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('BuildingBlocksDfcBaseUrl'), 'APIM/apim-api.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "apimLoggerName": {
+            "value": "[parameters('apimLoggerName')]"
+          },
+          "apimProductInstanceName": {
+            "value": "[parameters('apimProductName')]"
+          },
+          "apimServiceName": {
+            "value": "[parameters('apimServiceName')]"
+          },
+          "apiName": {
+            "value": "[variables('apimApiName')]"
+          }
+        }
+      },
+      "dependsOn": [
+        "[concat('apim-product-', parameters('apimProductName'))]",
+        "[concat('apim-logger-', parameters('apimLoggerName'))]"
+      ]
+    },
     {
       "apiVersion": "2018-02-01",
       "name": "[variables('appServicePlanName')]",
