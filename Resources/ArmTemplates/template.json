@@ -45,6 +45,7 @@
   "variables": {
     "appServicePlanName": "[concat(variables('resourcePrefix'), '-asp')]",
     "appServicePlanResourceGroup": "[concat(variables('resourcePrefix'),'-rg')]",
+    "appServicePlanId": "[resourceId(variables('appServicePlanResourceGroup'), 'Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
     "buildingBlocksDfcBaseUrl": "https://raw.githubusercontent.com/olusola-adio/mon-devops/master/ArmTemplates/",
     "resourcePrefix": "[tolower(concat('mon-', tolower(parameters('Environment')), '-api-calc'))]",
     "functionAppName": "[concat(variables('ResourcePrefix'), '-fa')]",
@@ -175,6 +176,7 @@
       },
       "properties": {
         "httpsOnly": true,
+        "serverFarmId":"[variables('appServicePlanId')]",
         "siteConfig": {
           "appSettings": [
             {
