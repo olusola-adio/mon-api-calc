@@ -67,7 +67,7 @@ stages:
       AppServiceName: '$(FunctionAppName)'
       ApimLoggerName: "$(ApimLoggerName)"
       ApimProductName: "$(ApimProductName)"
-      SharedResourceGroup: $(SharedResourceGroup)
+      SharedResourceGroup: $(appSharedResourceGroup)
       ApimServiceName: $(ApimServiceName)
       FunctionAppDomain: $(FunctionAppDomain)
       ApimApiName: $(ApimApiName)

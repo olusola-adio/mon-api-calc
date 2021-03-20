@@ -19,7 +19,7 @@ namespace Mon.Calculator.Functions
     {
         private const string SwaggerJsonRoute = "swagger/json";
         private const string SwaggerUiRoute = "swagger/ui";
-        private const string ApiDefinitionDescription = "National Careers Service LMI Transformation API is a RESTful API that provides a simple and consistent approach to transforming LMI data.";
+        private const string ApiDefinitionDescription = "CALc Calculator API is a RESTful API.";
         private const string ApiVersion = "0.1.0";
 
         private readonly ISwaggerDocumentGenerator swaggerDocumentGenerator;
@@ -53,7 +53,8 @@ namespace Mon.Calculator.Functions
                 ApiVersion,
                 Assembly.GetExecutingAssembly(),
                 false,
-                false))
+                false,
+                "/"))
                 .ConfigureAwait(false);
 
             return new OkObjectResult(swaggerDoc);
