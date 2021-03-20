@@ -14,7 +14,7 @@ namespace Mon.Calculator.Functions
 {
     public class AddNumbers
     {
-
+        private const string FunctionName = "AddTwoNumbers";
         private readonly ILogger<AddNumbers> logger;
 
         public AddNumbers(
@@ -23,8 +23,8 @@ namespace Mon.Calculator.Functions
             this.logger = logger;
         }
 
-        [FunctionName("AddNumbers")]
-        [Display(Name = "Add 2 numbers", Description = "Add two numbers and return result.")]
+        [FunctionName(FunctionName)]
+        [Display(Name = "Adds 2 numbers", Description = "Add two numbers and return result.")]
         [ProducesResponseType(typeof(ResponseObject), (int)HttpStatusCode.OK)]
         [Response(HttpStatusCode = (int)HttpStatusCode.OK, Description = "Detail retrieved", ShowSchema = false)]
         [Response(HttpStatusCode = (int)HttpStatusCode.BadRequest, Description = "Invalid request data", ShowSchema = false)]
@@ -33,7 +33,7 @@ namespace Mon.Calculator.Functions
         [Response(HttpStatusCode = (int)HttpStatusCode.Forbidden, Description = "Insufficient access", ShowSchema = false)]
         [Response(HttpStatusCode = (int)HttpStatusCode.TooManyRequests, Description = "Too many requests being sent, by default the API supports 150 per minute.", ShowSchema = false)]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "add-numbers/{input1}/{input2}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "AddTwoNumbers")] HttpRequest req,
             string input1, string input2)
         {
             logger.LogInformation("C# HTTP trigger function processed a request.");
