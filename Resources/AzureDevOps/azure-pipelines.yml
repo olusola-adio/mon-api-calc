@@ -14,8 +14,8 @@ resources:
     ref: refs/tags/v1.11.1
 
 pool:
-  vmImage: vs2017-win2016 
-
+  vmImage: vs2017-win2016
+  
 stages:
 - stage: Build
   displayName: Build, Test and Analyze
@@ -69,12 +69,8 @@ stages:
       ApimProductName: "$(ApimProductName)"
       SharedResourceGroup: $(SharedResourceGroup)
       ApimServiceName: $(ApimServiceName)
-      ApimProductInstanceName: $(ApimProductInstanceName)
-      ApiName: $(ApiName)
-      ApiId: $(ApiId)
       FunctionAppDomain: $(FunctionAppDomain)
       ApimApiName: $(ApimApiName)
-      SubscriptionPosturi: '$(SubscriptionPosturi)'
       Apis:
         -
           - azureFunctionName: '${{ variables.FunctionAppName }}'
