@@ -14,7 +14,7 @@ namespace Mon.Calculator.Functions
 {
     public class AddNumbers
     {
-
+        private const string FunctionName = "AddNumbers";
         private readonly ILogger<AddNumbers> logger;
 
         public AddNumbers(
@@ -23,7 +23,7 @@ namespace Mon.Calculator.Functions
             this.logger = logger;
         }
 
-        [FunctionName("AddNumbers")]
+        [FunctionName(FunctionName)]
         [Display(Name = "Add 2 numbers", Description = "Add two numbers and return result.")]
         [ProducesResponseType(typeof(ResponseObject), (int)HttpStatusCode.OK)]
         [Response(HttpStatusCode = (int)HttpStatusCode.OK, Description = "Detail retrieved", ShowSchema = false)]
@@ -33,28 +33,26 @@ namespace Mon.Calculator.Functions
         [Response(HttpStatusCode = (int)HttpStatusCode.Forbidden, Description = "Insufficient access", ShowSchema = false)]
         [Response(HttpStatusCode = (int)HttpStatusCode.TooManyRequests, Description = "Too many requests being sent, by default the API supports 150 per minute.", ShowSchema = false)]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "AddNumbers/{input1}/{input2}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Admin, "get", Route = "AddNumbers/{input1}/{input2}")] HttpRequest req,
             string input1, string input2)
         {
             logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            string inputString1 = req.Query["input1"];
-            string inputString2 = req.Query["input2"];
 
             var responseObject = new ResponseObject();
             try
             {
-                var number1 = double.Parse(inputString1);
-                var number2 = double.Parse(inputString2);
+                var number1 = double.Parse(input1);
+                var number2 = double.Parse(input2);
 
                 await Task.Run(() => responseObject.Result = (number1 + number2).ToString());
-                logger.LogInformation($"{inputString1} + {inputString2} = {responseObject.Result}");
+                logger.LogInformation($"{input1} + {input2} = {responseObject.Result}");
             }
             catch (Exception exception)
             {
                 await Task.Run(() => responseObject.Result = exception.Message);
                 logger.LogError(exception.StackTrace);
-                logger.LogError($"Crap info sent through {inputString1} and {inputString2}");
+                logger.LogError($"Crap info sent through {input1} and {input2}");
             }
 
             return new OkObjectResult(responseObject);
