@@ -24,18 +24,20 @@ variables:
 - name: FunctionAppName
   value: $(WebAppPrefix)-fa
 - name: ApplicationName
-  value: monc-api-calc
+  value: mon-api-calc
 - name: apimLoggerName
   value: CALC-logger
 - name: apimProductName
   value: CALC
 - name: apimApiName
   value: Calculator
+- name: apimResourceGroup
+  value: mon-dev-app-sharedresources-rg
+- name: apimServiceName
+  value: mon-dev-shared-apim
 - name: SubscriptionPosturi
   value: https://$(FunctionAppName).$(FunctionAppDomain)/api/subscription
 - name: appSharedResourceGroup
   value: mon-dev-app-sharedresources-rg
 - name: appSharedStorageAccountName
   value: mondevappsharedstr
-- name: apimServiceName
-  value: mon-dev-shared-apim

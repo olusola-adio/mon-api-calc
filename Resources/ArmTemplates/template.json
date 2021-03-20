@@ -53,7 +53,7 @@
     "ActionGroupName": "[concat('mon-', tolower(parameters('Environment')), '-app-sharedresources-actgrp')]"
   },
   "resources": [
-        {
+    {
       "name": "[concat('apim-logger-', parameters('apimLoggerName'))]",
       "type": "Microsoft.Resources/deployments",
       "resourceGroup": "[parameters('apimResourceGroup')]",
@@ -74,7 +74,7 @@
         }
       }
     },
-        {
+    {
       "name": "[concat('apim-product-', parameters('apimProductName'))]",
       "type": "Microsoft.Resources/deployments",
       "resourceGroup": "[parameters('apimResourceGroup')]",
@@ -98,7 +98,7 @@
         }
       }
     },
-        {
+    {
       "name": "[concat('apim-api-', variables('apimApiName'))]",
       "type": "Microsoft.Resources/deployments",
       "resourceGroup": "[parameters('apimResourceGroup')]",
