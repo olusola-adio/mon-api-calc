@@ -69,12 +69,8 @@ stages:
       ApimProductName: "$(ApimProductName)"
       SharedResourceGroup: $(SharedResourceGroup)
       ApimServiceName: $(ApimServiceName)
-      ApimProductInstanceName: $(ApimProductInstanceName)
-      ApiName: $(ApiName)
-      ApiId: $(ApiId)
       FunctionAppDomain: $(FunctionAppDomain)
       ApimApiName: $(ApimApiName)
-      SubscriptionPosturi: '$(SubscriptionPosturi)'
       Apis:
         -
           - azureFunctionName: '${{ variables.FunctionAppName }}'

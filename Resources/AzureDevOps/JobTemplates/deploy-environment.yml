@@ -15,9 +15,7 @@ parameters:
   ApimProductName: ''
   SharedResourceGroup: ''
   ApimServiceName: ''
-  ApimProductInstanceName: ''
-  ApiName: ''
-  ApiId: ''
+  ApimProductInstanceName: ''1
   FunctionAppDomain: ''
   ArmOutputVariableName: 'ARMOutputs'
   ApimApiName: ''

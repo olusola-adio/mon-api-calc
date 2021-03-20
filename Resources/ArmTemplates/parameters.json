@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "appSharedStorageAccountName": {
-      "value": "__appSharedStorageAccountName__"
+      "value": "__sharedMonStorageAccountName__"
     },
     "appSharedResourceGroup": {
       "value": "__appSharedResourceGroup__"
@@ -39,7 +39,7 @@
       "value": "__apimLoggerName__"
     },
     "apimResourceGroup": {
-      "value": "__apimResourceGroup__"
+      "value": "__appSharedResourceGroup__"
     }
   }
 }
