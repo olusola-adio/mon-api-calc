@@ -11,6 +11,7 @@ parameters:
   ArmTemplateFolder: ''
   SetTagsScriptFilePath: '$(System.DefaultWorkingDirectory)\Set-EsfaResourceGroupTags.ps1'
   SolutionBaseName: ''
+  FunctionAppName: ''
 
 steps:
 - checkout: mon-devops
@@ -60,4 +61,4 @@ steps:
     azureSubscription: '${{ parameters.AzureSubscription }}'
     scriptType: ps
     scriptPath: '$(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}.Scripts/Create-AppAuthentication.ps1'
-    arguments: ' -ResourceGroup ${{ parameters.ResourceGroup }} -FunctionAppName ${{ parameters.WebAppName }} -Verbose'
+    arguments: ' -ResourceGroup ${{ parameters.ResourceGroup }} -FunctionAppName ${{ parameters.FunctionAppName }} -Verbose'

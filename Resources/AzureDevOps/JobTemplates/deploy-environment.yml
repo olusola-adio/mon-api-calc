@@ -18,6 +18,7 @@ parameters:
   Apis: []
   Location: 'West Europe'
   SetEsfaResourceGroupTagsScript: 'https://raw.githubusercontent.com/olusola-adio/mon-devops/master/PSScripts/Set-EsfaResourceGroupTags.ps1'
+  FunctionAppName: ''
 
 jobs:
 - deployment: DeployTemplate
@@ -40,11 +41,12 @@ jobs:
             ArmOutputVariableName: '${{ parameters.ArmOutputVariableName }}'
             ArmTemplateFolder: '${{ parameters.ArmTemplateFolder }}'
             SolutionBaseName: '${{ parameters.SolutionBaseName }}'
+            FunctionAppName: '${{ parameters.FunctionAppName }}'
 
 - ${{ each apiPartition in parameters.Apis }}:
   - ${{ each api in apiPartition }}:
     - deployment: DeployFunction
-      displayName: "Deploy ${{ api.azureFunctionName }}"
+      displayName: "Deploy Function"
       environment: ${{ parameters.EnvironmentName }}
       dependsOn: 
       - DeployTemplate
