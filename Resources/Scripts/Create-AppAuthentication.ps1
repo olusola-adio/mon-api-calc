@@ -51,8 +51,8 @@ try {
         $MSGraphAPI = "00000003-0000-0000-c000-000000000000" #UID of Microsoft Graph
         $Permission = "e1fe6dd8-ba31-4d61-89e7-88639da4683d=Scope" # ID: Read permission, Type: Scope
 
-        Write-Verbose "Create associated service principal" 
-        az ad sp create --id $AADappId
+        # Write-Verbose "Create associated service principal" 
+        # az ad sp create --id $AADappId
 
 
         Write-Verbose "set app permission"
@@ -62,7 +62,7 @@ try {
         Write-Verbose "Get appp id"
         $AADappId = $(az ad app list --display-name $AADappName --query [].appId -o tsv)
         Write-Verbose "Update webapp auth"
-        az webapp auth update -g $ResourceGroup -n $FunctionAppName --enabled true --action LoginWithAzureActiveDirectory --aad-client-id $AADappId --aad-client-secret Logion1234 --aad-allowed-token-audiences $urls --token-store true
+        az webapp auth update -g $ResourceGroup -n $FunctionAppName --enabled true --action LoginWithAzureActiveDirectory --aad-client-id $AADappId --aad-client-secret Logion1234 --aad-allowed-token-audiences "https://$($WebAppFDQN)" --token-store true --aad-token-issuer-url "https://sts.windows.net/***/"
     
 
     }
