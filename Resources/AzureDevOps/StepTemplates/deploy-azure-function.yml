@@ -25,14 +25,13 @@ steps:
     deployToSlotOrASE: false
     ResourceGroupName: '${{ parameters.ResourceGroup }}'
 
-- task: AzurePowerShell@4
+- task: AzureCLI@2
   displayName: 'Switch off authentication'
   inputs:
     azureSubscription: '${{ parameters.AzureSubscription }}'
-    ScriptPath: $(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}.Scripts/Toggle-AppAuthentication.ps1
-    ScriptArguments: ' -ResourceGroup ${{ parameters.ResourceGroup }} -FunctionAppName ${{ parameters.WebAppName }} -Toggle $False -Verbose'
-    azurePowerShellVersion: LatestVersion
-
+    scriptType: ps
+    scriptPath: '$(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}.Scripts/Toggle-AppAuthentication.ps1'
+    arguments: ' -ResourceGroup ${{ parameters.ResourceGroup }} -FunctionAppName ${{ parameters.WebAppName }} -Toggle $False -Verbose'
 
 - task: AzurePowerShell@4
   displayName: 'Import OpenAPI specification'
@@ -42,11 +41,11 @@ steps:
     ScriptArguments: ' -ApimResourceGroup ${{ parameters.SharedResourceGroup }} -InstanceName ${{ parameters.ApimServiceName }} -ApiName ${{ parameters.ApimProductName }}-${{ parameters.ApimApiName }} -ApiPath ${{ parameters.ApimProductName }}/${{ parameters.ApimApiName }} -SwaggerSpecificationUrl https://${{ parameters.WebAppName }}.${{ parameters.FunctionAppDomain }}/swagger/json -OutputFilePath $(Agent.BuildDirectory)/SwaggerFile -Verbose'
     azurePowerShellVersion: LatestVersion
 
-- task: AzurePowerShell@4
+- task: AzureCLI@2
   displayName: 'Switch on authentication'
   inputs:
     azureSubscription: '${{ parameters.AzureSubscription }}'
-    ScriptPath: $(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}.Scripts/Toggle-AppAuthentication.ps1
-    ScriptArguments: ' -ResourceGroup ${{ parameters.ResourceGroup }} -FunctionAppName ${{ parameters.WebAppName }} -Toggle $True -Verbose'
-    azurePowerShellVersion: LatestVersion
+    scriptType: ps
+    scriptPath: '$(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}.Scripts/Toggle-AppAuthentication.ps1'
+    arguments: ' -ResourceGroup ${{ parameters.ResourceGroup }} -FunctionAppName ${{ parameters.WebAppName }} -Toggle $True -Verbose'
 
