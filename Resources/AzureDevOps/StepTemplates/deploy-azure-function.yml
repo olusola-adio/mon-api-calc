@@ -49,3 +49,17 @@ steps:
     scriptPath: '$(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}.Scripts/Toggle-AppAuthentication.ps1'
     arguments: ' -ResourceGroup ${{ parameters.ResourceGroup }} -FunctionAppName ${{ parameters.WebAppName }} -Toggle $True -Verbose'
 
+
+- task: Tokenization@2 
+  displayName: 'Tokenization: Rate Limit APIM Policy'
+  inputs:
+    SourcePath: '$(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}.ApimPolicies'
+    TargetFileNames: 'ApimPolicy-ManagedAuthentication.xml'
+
+- task: AzurePowerShell@5
+  displayName: 'Apply Managed Authentication APIM Policy'
+  inputs:
+    azureSubscription: '${{ parameters.AzureSubscription }}'
+    ScriptPath: '$(Agent.BuildDirectory)/s/dfc-devops/PSCoreScripts/Set-ApimPolicy.ps1'
+    ScriptArguments: '-PolicyScope api -ApimResourceGroup ${{ parameters.SharedResourceGroup }} -ApimServiceName ${{ parameters.ApimServiceName }} -PolicyFilePath "$(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}.ApimPolicies/ApimPolicy-ManagedAuthentication.xml" -ApiId CALC-calculator'
+    azurePowerShellVersion: LatestVersion

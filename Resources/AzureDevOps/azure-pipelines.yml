@@ -34,6 +34,11 @@ stages:
       inputs:
         targetPath: "$(Build.SourcesDirectory)/Resources/Scripts"
         artifactName: ${{ variables.SolutionBaseName }}.Scripts
+    - task: PublishPipelineArtifact@1
+      displayName: Publish APIM policies to Pipeline Artifact
+      inputs:
+        targetPath: "$(Build.SourcesDirectory)/Resources/ApimPolicy"
+        artifactName: ${{ variables.SolutionBaseName }}.ApimPolicies
 
   - job: BuildTestAndAnalyze
     displayName: "Build and test application"
