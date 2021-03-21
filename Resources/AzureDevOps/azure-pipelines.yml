@@ -73,6 +73,7 @@ stages:
       SharedResourceGroup: $(appSharedResourceGroup)
       ApimServiceName: $(ApimServiceName)
       FunctionAppDomain: $(FunctionAppDomain)
+      SolutionBaseName: $(SolutionBaseName)
       ApimApiName: $(ApimApiName)
       Apis:
         -

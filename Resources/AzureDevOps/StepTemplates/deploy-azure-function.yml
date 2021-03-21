@@ -8,6 +8,7 @@ parameters:
   ApimServiceName: ''
   ApimProductName: ''
   ApimApiName: ''
+  SolutionBaseName: ''
 
 
 steps:
