@@ -60,6 +60,6 @@ steps:
   displayName: 'Apply Managed Authentication APIM Policy'
   inputs:
     azureSubscription: '${{ parameters.AzureSubscription }}'
-    ScriptPath: '$(Agent.BuildDirectory)/s/mon-devops/PSCoreScripts/Set-ApimPolicy.ps1'
+    ScriptPath: '$(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}.Scripts/Set-ApimPolicy.ps1'
     ScriptArguments: '-PolicyScope api -ApimResourceGroup ${{ parameters.SharedResourceGroup }} -ApimServiceName ${{ parameters.ApimServiceName }} -PolicyFilePath "$(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}.ApimPolicies/ApimPolicy-ManagedAuthentication.xml" -ApiId CALC-calculator'
     azurePowerShellVersion: LatestVersion
