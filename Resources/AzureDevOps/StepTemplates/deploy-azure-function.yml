@@ -25,9 +25,27 @@ steps:
     ResourceGroupName: '${{ parameters.ResourceGroup }}'
 
 - task: AzurePowerShell@4
+  displayName: 'Switch off authentication'
+  inputs:
+    azureSubscription: '${{ parameters.AzureSubscription }}'
+    ScriptPath: $(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}.Scripts/Toggle-AppAuthentication.ps1
+    ScriptArguments: ' -g ${{ parameters.ResourceGroup }} -n ${{ parameters.WebAppName }} --enabled false -Verbose'
+    azurePowerShellVersion: LatestVersion
+
+
+- task: AzurePowerShell@4
   displayName: 'Import OpenAPI specification'
   inputs:
     azureSubscription: '${{ parameters.AzureSubscription }}'
     ScriptPath: '$(Agent.BuildDirectory)/s/mon-devops//PSCoreScripts/Import-ApimSwaggerApiDefinition.ps1'
     ScriptArguments: ' -ApimResourceGroup ${{ parameters.SharedResourceGroup }} -InstanceName ${{ parameters.ApimServiceName }} -ApiName ${{ parameters.ApimProductName }}-${{ parameters.ApimApiName }} -ApiPath ${{ parameters.ApimProductName }}/${{ parameters.ApimApiName }} -SwaggerSpecificationUrl https://${{ parameters.WebAppName }}.${{ parameters.FunctionAppDomain }}/swagger/json -OutputFilePath $(Agent.BuildDirectory)/SwaggerFile -Verbose'
     azurePowerShellVersion: LatestVersion
+
+- task: AzurePowerShell@4
+  displayName: 'Switch on authentication'
+  inputs:
+    azureSubscription: '${{ parameters.AzureSubscription }}'
+    ScriptPath: $(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}.Scripts/Toggle-AppAuthentication.ps1
+    ScriptArguments: ' -g ${{ parameters.ResourceGroup }} -n ${{ parameters.WebAppName }} --enabled true -Verbose'
+    azurePowerShellVersion: LatestVersion
+
