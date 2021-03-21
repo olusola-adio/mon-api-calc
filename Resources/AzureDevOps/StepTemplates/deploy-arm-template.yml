@@ -10,6 +10,7 @@ parameters:
   ArmOutputVariableName: 'ARMOutputs'
   ArmTemplateFolder: ''
   SetTagsScriptFilePath: '$(System.DefaultWorkingDirectory)\Set-EsfaResourceGroupTags.ps1'
+  SolutionBaseName: ''
 
 steps:
 - checkout: mon-devops
