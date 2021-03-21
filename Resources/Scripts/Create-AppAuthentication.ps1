@@ -71,7 +71,7 @@ try {
 
     $AADappId = $(az ad app list --display-name $AADappName --query [].appId -o tsv)
     Write-Host "##vso[task.setvariable variable=FunctionAppId]$AADappId"
-
+    Write-Output "##vso[task.setvariable variable=FunctionAppId]$AADappId"
 
 }
 catch {
