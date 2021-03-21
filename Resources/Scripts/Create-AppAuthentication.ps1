@@ -43,7 +43,7 @@ try {
     if (!$appExists) {
 
         Write-Verbose "appId doesnt exist, so creatinbg a new one"
-        az ad app create --display-name $AADappName --homepage="https://$($WebAppFDQN)" --reply-urls $urls --oauth2-allow-implicit-flow true --password Logion1234
+        az ad app create --display-name $AADappName --homepage="https://$($WebAppFDQN)" --reply-urls $urls --oauth2-allow-implicit-flow true 
 
 
         
@@ -66,7 +66,7 @@ try {
     Write-Verbose "Get appp id"
     $AADappId = $(az ad app list --display-name $AADappName --query [].appId -o tsv)
     Write-Verbose "Update webapp auth"
-    az webapp auth update -g $ResourceGroup -n $FunctionAppName --enabled true --action LoginWithAzureActiveDirectory --aad-client-id $AADappId --aad-client-secret Logion1234 --aad-allowed-token-audiences "https://$($WebAppFDQN)" --token-store true --aad-token-issuer-url "https://sts.windows.net/2107104e-d4f3-468b-9202-8451051cc80a"
+    az webapp auth update -g $ResourceGroup -n $FunctionAppName --enabled true --action LoginWithAzureActiveDirectory --aad-client-id $AADappId  --aad-allowed-token-audiences "https://$($WebAppFDQN)" --token-store true --aad-token-issuer-url "https://sts.windows.net/2107104e-d4f3-468b-9202-8451051cc80a"
     
 
     $AADappId = $(az ad app list --display-name $AADappName --query [].appId -o tsv)
