@@ -30,6 +30,10 @@ Param(
 
 try {
     az webapp auth update -g $ResourceGroup -n $FunctionAppName --enabled $Toggle
+
+    $AADappId = $(az ad app list --display-name $FunctionAppName --query [].appId -o tsv)
+    Write-Host "##vso[task.setvariable variable=FunctionAppId]$($AADappId)"
+    Write-Output "##vso[task.setvariable variable=FunctionAppId]$($AADappId)"
 }
 catch {
    throw $_
