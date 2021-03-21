@@ -30,7 +30,7 @@ steps:
   inputs:
     azureSubscription: '${{ parameters.AzureSubscription }}'
     ScriptPath: $(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}.Scripts/Toggle-AppAuthentication.ps1
-    ScriptArguments: ' -g ${{ parameters.ResourceGroup }} -n ${{ parameters.WebAppName }} --enabled false -Verbose'
+    ScriptArguments: ' -ResourceGroup ${{ parameters.ResourceGroup }} -FunctionAppName ${{ parameters.WebAppName }} -Toggle false -Verbose'
     azurePowerShellVersion: LatestVersion
 
 
@@ -47,6 +47,6 @@ steps:
   inputs:
     azureSubscription: '${{ parameters.AzureSubscription }}'
     ScriptPath: $(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}.Scripts/Toggle-AppAuthentication.ps1
-    ScriptArguments: ' -g ${{ parameters.ResourceGroup }} -n ${{ parameters.WebAppName }} --enabled true -Verbose'
+    ScriptArguments: ' -ResourceGroup ${{ parameters.ResourceGroup }} -FunctionAppName ${{ parameters.WebAppName }} -Toggle true -Verbose'
     azurePowerShellVersion: LatestVersion
 
