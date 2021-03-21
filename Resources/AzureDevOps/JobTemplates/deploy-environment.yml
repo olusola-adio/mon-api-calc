@@ -42,8 +42,8 @@ jobs:
 
 - ${{ each apiPartition in parameters.Apis }}:
   - ${{ each api in apiPartition }}:
-    - deployment: Deploy${{ api.name }}
-      displayName: "Deploy ${{ api.name }}"
+    - deployment: Deploy${{ api.azureFunctionName }}
+      displayName: "Deploy ${{ api.azureFunctionName }}"
       environment: ${{ parameters.EnvironmentName }}
       dependsOn: 
       - DeployTemplate

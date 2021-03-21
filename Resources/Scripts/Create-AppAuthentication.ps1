@@ -1,0 +1,67 @@
+<#
+.SYNOPSIS
+Update an APIM API with an openapi definition
+
+.DESCRIPTION
+Update an APIM API with a openapi definition
+
+.PARAMETER ResourceGroup
+The name of the resource group that contains the APIM instnace
+
+.PARAMETER FunctionAppName
+The name of the APIM instance
+
+.PARAMETER Toggle
+The name of the API to update
+
+.EXAMPLE
+Import-ApimOpenApiDefinitionFromFile -ApimResourceGroup dfc-foo-bar-rg -InstanceName dfc-foo-bar-apim -ApiName bar -OpenApiSpecificationFile some-file.yaml -Verbose
+
+#>
+[CmdletBinding()]
+Param(
+    [Parameter(Mandatory = $true)]
+    [String]$ResourceGroup,
+    [Parameter(Mandatory = $true)]
+    [String]$FunctionAppName
+)
+
+try {
+
+    Write-Verbose "Getting FQDN"
+    $WebAppFDQN = $(az webapp show -n $FunctionAppName -g $ResourceGroup --query "defaultHostName" --out tsv);
+
+
+    $AADsuffix = "/.auth/login/aad/callback" # AD Online is hardcoded to redirect to this path!!
+    $urls = "https://$($WebAppFDQN)$($AADsuffix)";
+
+    $AADappName = $FunctionAppName
+
+    Write-Verbose "Checking if appId exists"
+    $appCheck = az ad app list --display-name $AADappName | ConvertFrom-Json
+    $appExists = $appCheck.Length -gt 0
+    if (!$appExists) {
+
+        Write-Verbose "appId doesnt exist, so creatinbg a new one"
+        az ad app create --display-name $AADappName --homepage="https://$($WebAppFDQN)" --reply-urls $urls --oauth2-allow-implicit-flow true
+
+        Write-Verbose "Get appp id"
+        $AADappId = $(az ad app list --display-name $AADappName --query [].appId -o tsv)
+        $MSGraphAPI = "00000003-0000-0000-c000-000000000000" #UID of Microsoft Graph
+        $Permission = "e1fe6dd8-ba31-4d61-89e7-88639da4683d=Scope" # ID: Read permission, Type: Scope
+    
+        Write-Verbose "set app permission"
+        az ad app permission add --id $AADappId --api $MSGraphAPI --api-permissions $Permission
+    }
+
+
+    Write-Verbose "Get appp id"
+    $AADappId = $(az ad app list --display-name $AADappName --query [].appId -o tsv)
+    Write-Verbose "Update webapp auth"
+    az webapp auth update -g $ResourceGroup -n $FunctionAppName --enabled true --action LoginWithAzureActiveDirectory --aad-client-id $AADappId
+
+
+}
+catch {
+    throw $_
+}
