@@ -8,7 +8,7 @@ parameters:
   ApimServiceName: ''
   ApimProductName: ''
   ApimApiName: ''
-  SubscriptionPosturi: ''
+
 
 steps:
 - checkout: mon-devops

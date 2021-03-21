@@ -64,8 +64,6 @@ stages:
       PackageFile:  "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.DeploymentPackages/${{ variables.SolutionBaseName }}.zip"
       ArmTemplateFolder: "$(Pipeline.Workspace)/${{ variables.SolutionBaseName }}.Resources.ArmTemplates/"
       EnvironmentName: DEV_API_CALCULATOR
-      AppServiceName: '$(FunctionAppName)'
-      ApimLoggerName: "$(ApimLoggerName)"
       ApimProductName: "$(ApimProductName)"
       SharedResourceGroup: $(appSharedResourceGroup)
       ApimServiceName: $(ApimServiceName)
