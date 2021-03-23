@@ -31,8 +31,6 @@ variables:
   value: CALC
 - name: apimApiName
   value: Calculator
-- name: SubscriptionPosturi
-  value: https://$(FunctionAppName).$(FunctionAppDomain)/api/subscription
 - name: RateLimitRequests
   value: 30
 - name: RateLimitRenewalPeriod
