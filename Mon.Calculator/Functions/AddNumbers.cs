@@ -9,6 +9,9 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Mon.Calculator.Models;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
+using Microsoft.OpenApi.Models;
 
 namespace Mon.Calculator.Functions
 {
@@ -24,7 +27,7 @@ namespace Mon.Calculator.Functions
         }
 
         [FunctionName(FunctionName)]
-        [Display(Name = "Add 2 numbers", Description = "Add two numbers and return result.")]
+        [System.ComponentModel.DataAnnotations.Display(Name = "Add 2 numbers", Description = "Add two numbers and return result.")]
         [ProducesResponseType(typeof(ResponseObject), (int)HttpStatusCode.OK)]
         [Response(HttpStatusCode = (int)HttpStatusCode.OK, Description = "Detail retrieved", ShowSchema = false)]
         [Response(HttpStatusCode = (int)HttpStatusCode.BadRequest, Description = "Invalid request data", ShowSchema = false)]
@@ -32,16 +35,23 @@ namespace Mon.Calculator.Functions
         [Response(HttpStatusCode = (int)HttpStatusCode.Unauthorized, Description = "API key is unknown or invalid", ShowSchema = false)]
         [Response(HttpStatusCode = (int)HttpStatusCode.Forbidden, Description = "Insufficient access", ShowSchema = false)]
         [Response(HttpStatusCode = (int)HttpStatusCode.TooManyRequests, Description = "Too many requests being sent, by default the API supports 150 per minute.", ShowSchema = false)]
+        [OpenApiParameter(name: "input1", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The **Input1** parameter")]
+        [OpenApiParameter(name: "input2", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The **Input2** parameter")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "AddNumbers/{input1}/{input2}")] HttpRequest req,
-            string input1, string input2)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "AddNumbers")] HttpRequest req)
         {
             logger.LogInformation("C# HTTP trigger function processed a request.");
 
 
+            string input1 = string.Empty;
+            string input2 = string.Empty;
+            
             var responseObject = new ResponseObject();
             try
             {
+                input1 = req.Query["input1"];
+                input2 = req.Query["input2"];
+
                 var number1 = double.Parse(input1);
                 var number2 = double.Parse(input2);
 
