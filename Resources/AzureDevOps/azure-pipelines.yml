@@ -29,6 +29,7 @@ stages:
       parameters:
         ArmTemplateRoot: '${{ variables.ArmTemplateRoot }}'
         SolutionBaseName: '${{ variables.SolutionBaseName }}'
+        TestSuffix: 'UnitTests'
     - task: PublishPipelineArtifact@1
       displayName: Publish API import script to Pipeline Artifact
       inputs:
