@@ -50,8 +50,8 @@ stages:
         SolutionBaseName: $(SolutionBaseName)
         BuildPlatform: $(BuildPlatform)
         BuildConfiguration: $(BuildConfiguration)
-        DotNetCoreVersion: '5.0.201'
-        TestSuffix: 'UnitTests'
+        DotNetCoreVersion: '3.1.100'
+        TestSuffix: 'Tests'
 
 - stage: DeployToDevCalculatortApi
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
