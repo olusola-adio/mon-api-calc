@@ -19,7 +19,7 @@ namespace Mon.Calculator.Functions
     {
         private const string SwaggerJsonRoute = "swagger/json";
         private const string SwaggerUiRoute = "swagger/ui";
-        private const string ApiDefinitionDescription = "CALc Calculator API is a RESTful API.";
+        private const string ApiDefinitionDescription = "CALC Calculator API is a RESTful API.";
         private const string ApiVersion = "0.1.0";
 
         private readonly ISwaggerDocumentGenerator swaggerDocumentGenerator;
