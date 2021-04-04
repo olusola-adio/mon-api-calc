@@ -33,7 +33,7 @@ namespace Mon.Calculator.Functions
         [Response(HttpStatusCode = (int)HttpStatusCode.Forbidden, Description = "Insufficient access", ShowSchema = false)]
         [Response(HttpStatusCode = (int)HttpStatusCode.TooManyRequests, Description = "Too many requests being sent, by default the API supports 150 per minute.", ShowSchema = false)]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "AddNumbers?input1={input1}&input2={input2}")] HttpRequest req,
                                              [FromQuery] string input1,
                                              [FromQuery] string input2)
         {
