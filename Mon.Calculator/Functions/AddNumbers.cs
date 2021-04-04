@@ -43,8 +43,8 @@ namespace Mon.Calculator.Functions
             var responseObject = new ResponseObject();
             try
             {
-                var number1 = double.Parse(input1);
-                var number2 = double.Parse(input2);
+                var number1 = double.Parse(req.Query["input1"]);
+                var number2 = double.Parse(req.Query["input2"]);
 
                 await Task.Run(() => responseObject.Result = (number1 + number2).ToString());
                 logger.LogInformation($"{input1} + {input2} = {responseObject.Result}");
