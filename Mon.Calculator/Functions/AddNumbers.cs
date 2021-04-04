@@ -33,8 +33,9 @@ namespace Mon.Calculator.Functions
         [Response(HttpStatusCode = (int)HttpStatusCode.Forbidden, Description = "Insufficient access", ShowSchema = false)]
         [Response(HttpStatusCode = (int)HttpStatusCode.TooManyRequests, Description = "Too many requests being sent, by default the API supports 150 per minute.", ShowSchema = false)]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "AddNumbers/{input1}/{input2}")] HttpRequest req,
-            string input1, string input2)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "AddNumbers")] HttpRequest req,
+                                             [FromQuery] string input1,
+                                             [FromQuery] string input2)
         {
             logger.LogInformation("C# HTTP trigger function processed a request.");
 
