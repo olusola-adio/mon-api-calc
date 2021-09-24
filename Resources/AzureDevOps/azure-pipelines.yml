@@ -20,6 +20,13 @@ stages:
 - stage: Build
   displayName: Build, Test and Analyze
   jobs:
+  - template: JobTemplates\PesterTests.yml
+    parameters:
+      TestsPath: 'tests'
+      ResultsPath: 'Publish'
+      CodeCoverageResultsFile: 'Pester-Coverage.xml'
+      TestResultsFile: 'Test-Pester.xml'
+        
   - job: TestArmTemplates
     displayName: "Test ARM Template"
     pool:
@@ -52,6 +59,8 @@ stages:
         BuildConfiguration: $(BuildConfiguration)
         DotNetCoreVersion: '3.1.100'
         TestSuffix: 'Tests'
+
+
 
 - stage: DeployToDevCalculatortApi
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
