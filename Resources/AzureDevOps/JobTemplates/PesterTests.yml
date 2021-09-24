@@ -1,0 +1,36 @@
+parameters:
+  TestsPath: ''
+  ResultsPath: ''
+  CodeCoverageResultsFile: ''
+  TestResultsFile: ''
+ 
+
+jobs:
+- job: Pester
+  workspace:
+      clean: all
+  steps:
+  - task: PowerShell@2
+    displayName: 'Executing Pester Tests'
+    inputs:
+      filePath: '$(System.DefaultWorkingDirectory)\tests\Pester\Pester.ps1'
+      arguments: '-TestsPath $(System.DefaultWorkingDirectory)\${{ parameters.TestsPath }} -ResultsPath $(System.DefaultWorkingDirectory)\${{ parameters.ResultsPath }} -Publish -TestResultsFile ${{ parameters.TestResultsFile }} -CodeCoverageResultsFile ${{ parameters.CodeCoverageResultsFile }}'
+      errorActionPreference: 'silentlyContinue'
+      ignoreLASTEXITCODE: true
+
+  # - task: PublishCodeCoverageResults@1
+  #   displayName: 'Publish Code Coverage'
+  #   inputs:
+  #     codeCoverageTool: 'JaCoCo'
+  #     summaryFileLocation: '**/${{ parameters.CodeCoverageResultsFile }}'
+  #     pathToSources: '$(System.DefaultWorkingDirectory)'
+  #     failIfCoverageEmpty: true
+  #     additionalCodeCoverageFiles: '$(System.DefaultWorkingDirectory)/**/*.ps*'
+
+  - task: PublishTestResults@2
+    displayName: 'Publish Pester Tests'
+    inputs:
+      testResultsFormat: 'NUnit'
+      testResultsFiles: '**/${{ parameters.TestResultsFile }}'
+      mergeTestResults: true
+      failTaskOnFailedTests: true
