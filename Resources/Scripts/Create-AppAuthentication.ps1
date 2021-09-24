@@ -43,10 +43,7 @@ try {
     if (!$appExists) {
 
         Write-Verbose "appId doesnt exist, so creatinbg a new one"
-        az ad app create --display-name $AADappName --homepage="https://$($WebAppFDQN)" --reply-urls $urls --oauth2-allow-implicit-flow true 
-
-
-        
+        az ad app create --display-name $AADappName --homepage="https://$($WebAppFDQN)" --reply-urls $urls --oauth2-allow-implicit-flow true
 
     }
 
@@ -55,9 +52,8 @@ try {
     $MSGraphAPI = "00000003-0000-0000-c000-000000000000" #UID of Microsoft Graph
     $Permission = "e1fe6dd8-ba31-4d61-89e7-88639da4683d=Scope" # ID: Read permission, Type: Scope
 
-    # Write-Verbose "Create associated service principal" 
+    # Write-Verbose "Create associated service principal"
     # az ad sp create --id $AADappId
-
 
     Write-Verbose "set app permission"
     az ad app permission add --id $AADappId --api $MSGraphAPI --api-permissions $Permission
