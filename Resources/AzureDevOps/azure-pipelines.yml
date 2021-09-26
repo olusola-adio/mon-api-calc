@@ -26,6 +26,7 @@ stages:
       ResultsPath: 'Publish'
       CodeCoverageResultsFile: 'Pester-Coverage.xml'
       TestResultsFile: 'Test-Pester.xml'
+      Tag: 'Quality'
         
   - job: TestArmTemplates
     displayName: "Test ARM Template"
