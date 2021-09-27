@@ -1,3 +1,33 @@
+<#
+.SYNOPSIS
+Runs the Pester tests
+
+.DESCRIPTION
+Sets up the tests and runs them
+
+.PARAMETER TestsPath
+[Mandatory] Path to the test files
+
+.PARAMETER Publish
+[Optional] switch to decide whether to publish results or not
+
+.PARAMETER ResultsPath
+[Mandatory] Path to the test results file.
+
+.PARAMETER TestResultsFile
+[Mandatory] Name of the test results file.
+
+.PARAMETER CodeCoverageResultsFile
+[Mandatory] Name of the CodeCoverageResultsFile
+
+.PARAMETER Tag
+[Mandatory] Name of the CodeCoverageResultsFile
+
+.EXAMPLE
+Pester.ps1 -TestsPath $(System.DefaultWorkingDirectory)\${{ parameters.TestsPath }} -ResultsPath $(System.DefaultWorkingDirectory)\${{ parameters.ResultsPath }} -Publish -TestResultsFile ${{ parameters.TestResultsFile }} -CodeCoverageResultsFile ${{ parameters.CodeCoverageResultsFile }}
+
+#>
+
 param (
     [Parameter(Mandatory = $true)]
     [string]
@@ -7,7 +37,7 @@ param (
     [switch]
     $Publish,
 
-    [Parameter(Mandatory=$false)]
+    [Parameter(Mandatory=$true)]
     [string]
     $ResultsPath,
 
@@ -17,11 +47,15 @@ param (
 
     [Parameter(Mandatory=$true)]
     [string]
-    $CodeCoverageResultsFile
+    $CodeCoverageResultsFile,
+
+    [Parameter(Mandatory=$true)]
+    [string]
+    $Tag
 )
 
 $pesterModule = Get-Module -Name Pester -ListAvailable | Where-Object {$_.Version -like '5.*'}
-if (!$pesterModule) { 
+if (!$pesterModule) {
     try {
         Install-Module -Name Pester -Scope CurrentUser -Force -SkipPublisherCheck -MinimumVersion "5.0"
         $pesterModule = Get-Module -Name Pester -ListAvailable | Where-Object {$_.Version -like '5.*'}
@@ -60,7 +94,7 @@ $Configuration = [PesterConfiguration]@{
         Verbosity = 'Diagnostic'
     }
     Filter = @{
-        Tag = 'Quality'
+        Tag = $Tag
     }
     TestResult   = @{
         Enabled      = $true

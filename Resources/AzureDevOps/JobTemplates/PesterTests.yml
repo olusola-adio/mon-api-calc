@@ -3,10 +3,12 @@ parameters:
   ResultsPath: ''
   CodeCoverageResultsFile: ''
   TestResultsFile: ''
+  Tag: ''
  
 
 jobs:
 - job: Pester
+  displayName: Pester Code Quality Tests
   workspace:
       clean: all
   steps:
@@ -14,7 +16,8 @@ jobs:
     displayName: 'Executing Pester Tests'
     inputs:
       filePath: '$(System.DefaultWorkingDirectory)\tests\Pester\Pester.ps1'
-      arguments: '-TestsPath $(System.DefaultWorkingDirectory)\${{ parameters.TestsPath }} -ResultsPath $(System.DefaultWorkingDirectory)\${{ parameters.ResultsPath }} -Publish -TestResultsFile ${{ parameters.TestResultsFile }} -CodeCoverageResultsFile ${{ parameters.CodeCoverageResultsFile }}'
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
+      arguments: '-TestsPath $(System.DefaultWorkingDirectory)\${{ parameters.TestsPath }} -ResultsPath $(System.DefaultWorkingDirectory)\${{ parameters.ResultsPath }} -Publish -TestResultsFile ${{ parameters.TestResultsFile }} -CodeCoverageResultsFile ${{ parameters.CodeCoverageResultsFile }} -Tag ${{ parameters.Tag }}'
       errorActionPreference: 'silentlyContinue'
       ignoreLASTEXITCODE: true
 

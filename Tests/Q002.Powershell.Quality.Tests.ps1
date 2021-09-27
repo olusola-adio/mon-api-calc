@@ -1,5 +1,17 @@
+<#
+.SYNOPSIS
+Runs the Code Quality tests
+
+.DESCRIPTION
+Runs the Code Quality tests
+
+.EXAMPLE
+Q002.Powershell.Quality.Tests.ps1
+
+#>
+
 BeforeDiscovery {
-    $files = Get-ChildItem -Path $PSScriptRoot\..\*.ps1 -File -Recurse | Where-Object { $_.FullName -notlike "*\tests\*" }
+    $files = Get-ChildItem -Path $PSScriptRoot\..\*.ps1 -File -Recurse
     Write-Host "File count discovered for Code quality Tests: $($files.Count)"
 }
 Describe "Code quality tests" -ForEach @($files) -Tag "Quality" {
@@ -21,7 +33,7 @@ Describe "Code quality tests" -ForEach @($files) -Tag "Quality" {
     }
 
     Context "Code Quality Test $ScriptName" -Foreach @{scriptName = $scriptName; rules = $Rules; excludeRules = $ExcludeRules } {
-        It "Should -pass Script Analyzer rule '<_>'" -ForEach @($Rules) {
+        It "Should pass Script Analyzer rule '<_>'" -ForEach @($Rules) {
             $Result = Invoke-ScriptAnalyzer -Path $($scriptName) -IncludeRule $_ -ExcludeRule $ExcludeRules
             $Result.Count | Should -Be 0
         }
