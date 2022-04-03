@@ -21,8 +21,6 @@ Import-ApimOpenApiDefinitionFromFile -ApimResourceGroup dfc-foo-bar-rg -Instance
 [CmdletBinding()]
 Param(
     [Parameter(Mandatory = $true)]
-    [String]$ResourceGroup,
-    [Parameter(Mandatory = $true)]
     [String]$FunctionAppName
 )
 
