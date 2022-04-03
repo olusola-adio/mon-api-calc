@@ -43,11 +43,10 @@ try {
 
         Write-Verbose "appId doesnt exist, so creatinbg a new one"
         az ad app create --display-name $AADappName --homepage="https://$($WebAppFDQN)" --reply-urls $urls --oauth2-allow-implicit-flow true
-
     }
 
     Write-Verbose "Get appp id"
-   
+
     $AADappId = $(az ad app list --display-name $AADappName --query [].appId -o tsv)
     Write-Host "##vso[task.setvariable variable=FunctionAppId]$($AADappId)"
     Write-Output "##vso[task.setvariable variable=FunctionAppId]$($AADappId)"
