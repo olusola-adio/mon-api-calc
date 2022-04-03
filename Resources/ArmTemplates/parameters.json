@@ -45,7 +45,7 @@
       "value": "__clientId__"
     },
     "clientSecret": {
-      "value": "__new-mon-dev-api-calc-as__"
+      "value": "__NewMonDevApiCalcAs__"
     }
   }
 }
