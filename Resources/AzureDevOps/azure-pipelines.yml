@@ -71,6 +71,7 @@ stages:
   - group: mon-shared-dev
   - group: mon-app-shared-all
   - group: mon-app-shared-dev
+  - group: mon-dev-api-calc
   - group: KeyVault - mon-dev-shared-kv
   - template: VariableTemplates\DevEnvironmentVariables.yml
   
