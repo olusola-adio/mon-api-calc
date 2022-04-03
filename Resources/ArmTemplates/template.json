@@ -40,6 +40,12 @@
     },
     "apimResourceGroup": {
       "type": "string"
+    },
+    "clientId": {
+      "type": "string"
+    },
+    "clientSecret": {
+      "type": "securestring"
     }
   },
   "variables": {
@@ -176,7 +182,7 @@
       },
       "properties": {
         "httpsOnly": true,
-        "serverFarmId":"[variables('appServicePlanId')]",
+        "serverFarmId": "[variables('appServicePlanId')]",
         "siteConfig": {
           "appSettings": [
             {
@@ -210,6 +216,10 @@
             {
               "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
               "value": "[reference(variables('functionAppInsightsName')).outputs.InstrumentationKey.value]"
+            },
+            {
+              "name": "MICROSOFT_PROVIDER_AUTHENTICATION_SECRET",
+              "value": "[parameters('clientSecret')]"
             }
           ]
         }
@@ -218,6 +228,104 @@
         "[variables('functionAppInsightsName')]",
         "[variables('appServicePlanName')]"
       ]
+    },
+    {
+      "name": "[concat(variables('functionAppName'), '/authsettingsV2')]",
+      "type": "Microsoft.Web/sites/config",
+      "apiVersion": "2020-12-01",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[variables('functionAppName')]"
+      ],
+      "properties": {
+        "platform": {
+          "enabled": true,
+          "runtimeVersion": "~1"
+        },
+        "globalValidation": {
+          "requireAuthentication": true,
+          "unauthenticatedClientAction": "RedirectToLoginPage",
+          "redirectToProvider": "azureactivedirectory"
+        },
+        "identityProviders": {
+          "azureActiveDirectory": {
+            "enabled": true,
+            "registration": {
+              "openIdIssuer": "[concat('https://sts.windows.net/',tenant().tenantId,'/v2.0')]",
+              "clientId": "[parameters('clientId')]",
+              "clientSecretSettingName": "MICROSOFT_PROVIDER_AUTHENTICATION_SECRET"
+            },
+            "login": {
+              "disableWWWAuthenticate": false
+            },
+            "validation": {
+              "jwtClaimChecks": {},
+              "allowedAudiences": [],
+              "defaultAuthorizationPolicy": {
+                "allowedPrincipals": {}
+              }
+            }
+          },
+          "facebook": {
+            "enabled": true,
+            "registration": {},
+            "login": {}
+          },
+          "gitHub": {
+            "enabled": true,
+            "registration": {},
+            "login": {}
+          },
+          "google": {
+            "enabled": true,
+            "registration": {},
+            "login": {},
+            "validation": {}
+          },
+          "twitter": {
+            "enabled": true,
+            "registration": {}
+          },
+          "legacyMicrosoftAccount": {
+            "enabled": true,
+            "registration": {},
+            "login": {},
+            "validation": {}
+          },
+          "apple": {
+            "enabled": true,
+            "registration": {},
+            "login": {}
+          }
+        },
+        "login": {
+          "routes": {},
+          "tokenStore": {
+            "enabled": true,
+            "tokenRefreshExtensionHours": 72,
+            "fileSystem": {},
+            "azureBlobStorage": {}
+          },
+          "preserveUrlFragmentsForLogins": false,
+          "cookieExpiration": {
+            "convention": "FixedTime",
+            "timeToExpiration": "08:00:00"
+          },
+          "nonce": {
+            "validateNonce": true,
+            "nonceExpirationInterval": "00:05:00"
+          }
+        },
+        "httpSettings": {
+          "requireHttps": true,
+          "routes": {
+            "apiPrefix": "/.auth"
+          },
+          "forwardProxy": {
+            "convention": "NoProxy"
+          }
+        }
+      }
     },
     {
       "apiVersion": "2019-05-01",

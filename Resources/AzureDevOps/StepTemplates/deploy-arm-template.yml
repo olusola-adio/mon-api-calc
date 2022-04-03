@@ -55,10 +55,10 @@ steps:
     Contents: parameters.json
   condition: always()
 
-- task: AzureCLI@2
-  displayName: 'Create Function App authentication'
-  inputs:
-    azureSubscription: '${{ parameters.AzureSubscription }}'
-    scriptType: ps
-    scriptPath: '$(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}.Scripts/Create-AppAuthentication.ps1'
-    arguments: ' -ResourceGroup ${{ parameters.ResourceGroup }} -FunctionAppName ${{ parameters.FunctionAppName }} -Verbose'
+# - task: AzureCLI@2
+#   displayName: 'Create Function App authentication'
+#   inputs:
+#     azureSubscription: '${{ parameters.AzureSubscription }}'
+#     scriptType: ps
+#     scriptPath: '$(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}.Scripts/Create-AppAuthentication.ps1'
+#     arguments: ' -ResourceGroup ${{ parameters.ResourceGroup }} -FunctionAppName ${{ parameters.FunctionAppName }} -Verbose'

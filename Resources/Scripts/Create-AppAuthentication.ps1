@@ -62,7 +62,7 @@ try {
     Write-Verbose "Get appp id"
     $AADappId = $(az ad app list --display-name $AADappName --query [].appId -o tsv)
     Write-Verbose "Update webapp auth"
-    az webapp auth update -g $ResourceGroup -n $FunctionAppName --enabled true --action LoginWithAzureActiveDirectory --aad-client-id $AADappId  --aad-allowed-token-audiences "https://$($WebAppFDQN)" --token-store true --aad-token-issuer-url "https://sts.windows.net/2107104e-d4f3-468b-9202-8451051cc80a"
+    az webapp auth update -g $ResourceGroup -n $FunctionAppName --enabled true --action LoginWithAzureActiveDirectory --aad-client-id $AADappId  --aad-allowed-token-audiences "api://$($AADappId)" --token-store true --aad-token-issuer-url "https://sts.windows.net/2107104e-d4f3-468b-9202-8451051cc80a/v2.0"
 
 
     $AADappId = $(az ad app list --display-name $AADappName --query [].appId -o tsv)
