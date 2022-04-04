@@ -150,43 +150,43 @@
         "tier": "Dynamic"
       }
     },
-    {
-      "apiVersion": "2017-05-10",
-      "name": "[variables('functionAppInsightsName')]",
-      "type": "Microsoft.Resources/deployments",
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[concat(variables('buildingBlocksDfcBaseUrl'), 'application-insights.json')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "appInsightsName": {
-            "value": "[variables('functionAppInsightsName')]"
-          },
-          "attachedService": {
-            "value": ""
-          }
-        }
-      }
-    },
     // {
-    //   "type": "microsoft.insights/components",
-    //   "apiVersion": "2020-02-02",
+    //   "apiVersion": "2017-05-10",
     //   "name": "[variables('functionAppInsightsName')]",
-    //   "location": "[resourceGroup().location]",
-    //   "kind": "web",
+    //   "type": "Microsoft.Resources/deployments",
     //   "properties": {
-    //     "Application_Type": "web",
-    //     "Flow_Type": "Redfield",
-    //     "Request_Source": "IbizaWebAppExtensionCreate",
-    //     "RetentionInDays": 90,
-    //     "WorkspaceResourceId": "[resourceId('mon-dev-shared-rg', 'Microsoft.OperationalInsights/workspaces', 'mon-dev-shared-la')]",
-    //     "IngestionMode": "LogAnalytics",
-    //     "publicNetworkAccessForIngestion": "Enabled",
-    //     "publicNetworkAccessForQuery": "Enabled"
+    //     "mode": "Incremental",
+    //     "templateLink": {
+    //       "uri": "[concat(variables('buildingBlocksDfcBaseUrl'), 'application-insights.json')]",
+    //       "contentVersion": "1.0.0.0"
+    //     },
+    //     "parameters": {
+    //       "appInsightsName": {
+    //         "value": "[variables('functionAppInsightsName')]"
+    //       },
+    //       "attachedService": {
+    //         "value": ""
+    //       }
+    //     }
     //   }
     // },
+    {
+      "type": "microsoft.insights/components",
+      "apiVersion": "2020-02-02",
+      "name": "[variables('functionAppInsightsName')]",
+      "location": "[resourceGroup().location]",
+      "kind": "web",
+      "properties": {
+        "Application_Type": "web",
+        "Flow_Type": "Redfield",
+        "Request_Source": "IbizaAIExtensionEnablementBlade",
+        "RetentionInDays": 90,
+        "WorkspaceResourceId": "[resourceId('mon-dev-shared-rg', 'Microsoft.OperationalInsights/workspaces', 'mon-dev-shared-la')]",
+        "IngestionMode": "LogAnalytics",
+        "publicNetworkAccessForIngestion": "Enabled",
+        "publicNetworkAccessForQuery": "Enabled"
+      }
+    },
     {
 
       "name": "[variables('functionAppName')]",

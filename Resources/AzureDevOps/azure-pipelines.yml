@@ -14,7 +14,7 @@ resources:
     ref: refs/tags/v1.11.1
 
 pool:
-  vmImage: vs2017-win2016
+  vmImage: windows-latest
   
 stages:
 - stage: Build
@@ -31,7 +31,7 @@ stages:
   - job: TestArmTemplates
     displayName: "Test ARM Template"
     pool:
-      vmImage: vs2017-win2016 
+      vmImage: windows-latest 
     steps:
     - template: /AzureDevOpsTemplates/Build/StepTemplates/mon-arm-build.yml@mon-devops
       parameters:
@@ -51,7 +51,7 @@ stages:
   - job: BuildTestAndAnalyze
     displayName: "Build and test application"
     pool:
-      vmImage: vs2017-win2016 
+      vmImage: windows-latest 
     steps:
     - template: AzureDevOpsTemplates\Build\StepTemplates\mon-dotnetcore-build.yml@mon-devops
       parameters:
