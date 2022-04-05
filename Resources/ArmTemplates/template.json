@@ -56,10 +56,25 @@
     "resourcePrefix": "[tolower(concat('mon-', tolower(parameters('Environment')), '-api-calc'))]",
     "functionAppName": "[concat(variables('ResourcePrefix'), '-fa')]",
     "functionAppInsightsName": "[concat(variables('resourcePrefix'), '-ai')]",
+    "logAnalyticsWorkspaceName": "[concat(variables('resourcePrefix'),'-la')]",
     "apimApiName": "[concat(parameters('apimProductName'), '-', parameters('apimApiName'))]",
     "ActionGroupName": "[concat('mon-', tolower(parameters('Environment')), '-app-sharedresources-actgrp')]"
   },
   "resources": [
+    {
+      "type": "Microsoft.OperationalInsights/workspaces",
+      "name": "[variables('logAnalyticsWorkspaceName')]",
+      "apiVersion": "2020-08-01",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "resourceGroup": {
+          "name": "[resourceGroup().name]"
+        },
+        "sku": {
+          "name": "pergb2018"
+        }
+      }
+    },
     {
       "name": "[concat('apim-logger-', parameters('apimLoggerName'))]",
       "type": "Microsoft.Resources/deployments",
@@ -181,11 +196,14 @@
         "Flow_Type": "Redfield",
         "Request_Source": "Custom",
         "RetentionInDays": 90,
-        "WorkspaceResourceId": "/subscriptions/cb5ab4a7-dd08-4be3-9d7e-9f68ae30f224/resourceGroups/mon-dev-shared-rg/providers/Microsoft.OperationalInsights/workspaces/mon-dev-shared-la",
+        "WorkspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]",
         "IngestionMode": "LogAnalytics",
         "publicNetworkAccessForIngestion": "Enabled",
         "publicNetworkAccessForQuery": "Enabled"
-      }
+      },
+      "dependsOn": [
+        "[variables('logAnalyticsWorkspaceName')]"
+      ]
       // "[resourceId('mon-dev-shared-rg', 'Microsoft.OperationalInsights/workspaces', 'mon-dev-shared-la')]"
     },
     {
