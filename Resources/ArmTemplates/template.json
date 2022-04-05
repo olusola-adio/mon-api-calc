@@ -179,7 +179,7 @@
       "properties": {
         "Application_Type": "web",
         "Flow_Type": "Redfield",
-        "Request_Source": "IbizaAIExtensionEnablementBlade",
+        "Request_Source": "Custom",
         "RetentionInDays": 90,
         "WorkspaceResourceId": "[resourceId('mon-dev-shared-rg', 'Microsoft.OperationalInsights/workspaces', 'mon-dev-shared-la')]",
         "IngestionMode": "LogAnalytics",
