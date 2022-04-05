@@ -172,19 +172,15 @@
     // },
     {
       "type": "microsoft.insights/components",
-      "apiVersion": "2020-02-02",
+      "apiVersion": "2020-02-02-preview",
       "name": "[variables('functionAppInsightsName')]",
       "location": "[resourceGroup().location]",
-      "kind": "web",
       "properties": {
         "Application_Type": "web",
+        "AppplicationId": "[variables('functionAppInsightsName')]",
         "Flow_Type": "Redfield",
         "Request_Source": "Custom",
-        "RetentionInDays": 90,
-        "WorkspaceResourceId": "[resourceId('mon-dev-shared-rg', 'Microsoft.OperationalInsights/workspaces', 'mon-dev-shared-la')]",
-        "IngestionMode": "LogAnalytics",
-        "publicNetworkAccessForIngestion": "Enabled",
-        "publicNetworkAccessForQuery": "Enabled"
+        "WorkspaceResourceId": "[resourceId('mon-dev-shared-rg', 'Microsoft.OperationalInsights/workspaces', 'mon-dev-shared-la')]"
       }
     },
     {
