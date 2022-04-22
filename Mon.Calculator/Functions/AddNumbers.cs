@@ -8,31 +8,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using System.Security.Claims;
 using Mon.Calculator.Models;
-using Microsoft.Azure.WebJobs.Host;
-using System.Linq;
-using System.Threading;
-using System.Runtime.Serialization;
 
 namespace Mon.Calculator.Functions
 {
-    public class AddNumbers : BaseAuthorizedFunction
+    public class AddNumbers
     {
         private const string FunctionName = "AddNumbers";
         private readonly ILogger<AddNumbers> logger;
 
         public AddNumbers(
-            IHttpContextAccessor a,
-           ILogger<AddNumbers> logger) : base(a)
+           ILogger<AddNumbers> logger)
         {
             this.logger = logger;
-            
         }
 
-         public AddNumbers(IHttpContextAccessor a) : base(a) { }
-
-        [RoleAuthorize("Admin")]
         [FunctionName(FunctionName)]
         [Display(Name = "Add 2 numbers", Description = "Add two numbers and return result.")]
         [ProducesResponseType(typeof(ResponseObject), (int)HttpStatusCode.OK)]
@@ -44,13 +34,10 @@ namespace Mon.Calculator.Functions
         [Response(HttpStatusCode = (int)HttpStatusCode.TooManyRequests, Description = "Too many requests being sent, by default the API supports 150 per minute.", ShowSchema = false)]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "AddNumbers/{input1}/{input2}")] HttpRequest req,
-                                            ClaimsPrincipal principal,
                                              [FromQuery] string input1,
                                              [FromQuery] string input2)
         {
             logger.LogInformation("C# HTTP trigger function processed a request.");
-
-
 
 
             var responseObject = new ResponseObject();
@@ -70,74 +57,6 @@ namespace Mon.Calculator.Functions
             }
 
             return new OkObjectResult(responseObject);
-        }
-    }
-
-
-    internal class RoleAuthorizeAttribute : Microsoft.Azure.WebJobs.Host.FunctionInvocationFilterAttribute
-    {
-
-        private readonly string[] _validRoles;
-
-        public RoleAuthorizeAttribute(params string[] validRoles)
-        {
-            _validRoles = validRoles;
-        }
-
-        public override async Task OnExecutingAsync(FunctionExecutingContext executingContext, CancellationToken cancellationToken)
-        {
-            if (!executingContext.Arguments.ContainsKey("principal"))
-            {
-                throw new AuthorizationException("Authentication failed. Missing claims.");
-            }
-
-            var claimsPrincipal = (ClaimsPrincipal)executingContext.Arguments["principal"];
-            var roles = claimsPrincipal.Claims.Where(e => e.Type == "roles").Select(e => e.Value);
-
-            var isMember = roles.Intersect(_validRoles).Count() > 0;
-            if (!isMember)
-            {
-                throw new AuthorizationException("Authentication failed. User not assigned to one of the required roles.");
-            }
-        }
-    }
-
-    [Serializable]
-    internal class AuthorizationException : Exception
-    {
-        public AuthorizationException()
-        {
-        }
-
-        public AuthorizationException(string message) : base(message)
-        {
-        }
-
-        public AuthorizationException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected AuthorizationException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-    }
-
-    public abstract class BaseAuthorizedFunction : IFunctionExceptionFilter
-    {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        protected BaseAuthorizedFunction(IHttpContextAccessor httpContextAccessor)
-        {
-            _httpContextAccessor = httpContextAccessor;
-        }
-
-        public async Task OnExceptionAsync(FunctionExceptionContext exceptionContext, CancellationToken cancellationToken)
-        {
-            if (exceptionContext.Exception.InnerException != null && exceptionContext.Exception.InnerException is AuthorizationException)
-            {
-                _httpContextAccessor.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                await _httpContextAccessor.HttpContext.Response.WriteAsync(exceptionContext.Exception.InnerException.Message);
-            }
         }
     }
 }
