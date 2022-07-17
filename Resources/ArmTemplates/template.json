@@ -116,6 +116,9 @@
           },
           "productDisplayName": {
             "value": "[parameters('apimProductName')]"
+          },
+          "productDescription": {
+            "value": "[parameters('apimProductName')]"
           }
         }
       }
