@@ -32,6 +32,14 @@ steps:
     ScriptArguments: '-ResourceGroupName "${{ parameters.ResourceGroup }}" -Location "${{  parameters.Location  }}" -Environment "${{ parameters.EnvironmentTag }}" -ParentBusiness "${{ parameters.ParentBusiness }}" -ServiceOffering "${{ parameters.ServiceOffering }}" -Verbose'
     azurePowerShellVersion: LatestVersion
 
+# - task: AzureCLI@2
+#   displayName: 'Create Function App authentication'
+#   inputs:
+#     azureSubscription: '${{ parameters.AzureSubscription }}'
+#     scriptType: ps
+#     scriptPath: '$(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}.Scripts/Create-AppAuthentication.ps1'
+#     arguments: ' -ResourceGroup ${{ parameters.ResourceGroup }} -FunctionAppName ${{ parameters.FunctionAppName }} -Verbose'
+
 - task: Tokenization@2 
   displayName: 'Tokenization: Transform file parameters.json'
   inputs:
@@ -55,10 +63,3 @@ steps:
     Contents: parameters.json
   condition: always()
 
-- task: AzureCLI@2
-  displayName: 'Create Function App authentication'
-  inputs:
-    azureSubscription: '${{ parameters.AzureSubscription }}'
-    scriptType: ps
-    scriptPath: '$(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}.Scripts/Create-AppAuthentication.ps1'
-    arguments: ' -ResourceGroup ${{ parameters.ResourceGroup }} -FunctionAppName ${{ parameters.FunctionAppName }} -Verbose'

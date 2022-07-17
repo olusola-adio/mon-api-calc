@@ -37,6 +37,12 @@
     },
     "apimApiName": {
       "value": "api-name"
+    },
+    "clientId": {
+      "value": "clientId"
+    },
+    "clientSecret": {
+      "value": "secret"
     }
   }
 }

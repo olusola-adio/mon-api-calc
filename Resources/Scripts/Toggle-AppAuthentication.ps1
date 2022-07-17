@@ -29,6 +29,11 @@ Param(
 )
 
 try {
+
+    Write-Verbose "setting AuthV2 on"
+    az extension add --name authV2
+
+    Write-Verbose "Toggle enabled to $($Toggle)"
     az webapp auth update -g $ResourceGroup -n $FunctionAppName --enabled $Toggle
 
     $AADappId = $(az ad app list --display-name $FunctionAppName --query [].appId -o tsv)

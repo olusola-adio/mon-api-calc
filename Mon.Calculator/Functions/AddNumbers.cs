@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using DFC.Swagger.Standard.Annotations;
 using Microsoft.AspNetCore.Http;
@@ -38,6 +39,15 @@ namespace Mon.Calculator.Functions
                                              [FromQuery] string input2)
         {
             logger.LogInformation("C# HTTP trigger function processed a request.");
+
+            ClaimsPrincipal identities = req.HttpContext.User;
+            if (null != identities)
+            {
+                foreach (Claim claim in identities.Claims)
+                {
+                    logger.LogInformation("CLAIM TYPE: " + claim.Type + "; CLAIM VALUE: " + claim.Value + "</br>");
+                }
+            }
 
 
             var responseObject = new ResponseObject();

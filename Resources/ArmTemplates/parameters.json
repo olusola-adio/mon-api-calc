@@ -40,6 +40,12 @@
     },
     "apimResourceGroup": {
       "value": "__appSharedResourceGroup__"
+    },
+    "clientId": {
+      "value": "__clientId__"
+    },
+    "clientSecret": {
+      "value": "__MonApiCalcSecret__"
     }
   }
 }

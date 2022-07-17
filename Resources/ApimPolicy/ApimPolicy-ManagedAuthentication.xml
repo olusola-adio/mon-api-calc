@@ -2,8 +2,10 @@
   <inbound>
     <base />
     <rate-limit calls="__RateLimitRequests__" renewal-period="__RateLimitRenewalPeriod__" />
-    <authentication-managed-identity resource="__FunctionAppId__" />
-  </inbound>
+    <authentication-managed-identity resource="__FunctionAppId__" output-token-variable-name="msi-access-token" ignore-error="false" />
+    <set-header name="Authorization" exists-action="override">
+      <value>@("Bearer " + (string)context.Variables["msi-access-token"])</value>
+    </set-header>  </inbound>
   <backend>
     <base />
   </backend>
@@ -16,3 +18,5 @@
     <base />
   </on-error>
 </policies>
+
+

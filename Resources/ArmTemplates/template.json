@@ -40,6 +40,12 @@
     },
     "apimResourceGroup": {
       "type": "string"
+    },
+    "clientId": {
+      "type": "string"
+    },
+    "clientSecret": {
+      "type": "securestring"
     }
   },
   "variables": {
@@ -50,10 +56,25 @@
     "resourcePrefix": "[tolower(concat('mon-', tolower(parameters('Environment')), '-api-calc'))]",
     "functionAppName": "[concat(variables('ResourcePrefix'), '-fa')]",
     "functionAppInsightsName": "[concat(variables('resourcePrefix'), '-ai')]",
+    // "logAnalyticsWorkspaceName": "[concat(variables('resourcePrefix'),'-la')]",
     "apimApiName": "[concat(parameters('apimProductName'), '-', parameters('apimApiName'))]",
     "ActionGroupName": "[concat('mon-', tolower(parameters('Environment')), '-app-sharedresources-actgrp')]"
   },
   "resources": [
+    // {
+    //   "type": "Microsoft.OperationalInsights/workspaces",
+    //   "name": "[variables('logAnalyticsWorkspaceName')]",
+    //   "apiVersion": "2020-08-01",
+    //   "location": "[resourceGroup().location]",
+    //   "properties": {
+    //     "resourceGroup": {
+    //       "name": "[resourceGroup().name]"
+    //     },
+    //     "sku": {
+    //       "name": "pergb2018"
+    //     }
+    //   }
+    // },
     {
       "name": "[concat('apim-logger-', parameters('apimLoggerName'))]",
       "type": "Microsoft.Resources/deployments",
@@ -94,6 +115,9 @@
             "value": "[parameters('apimServiceName')]"
           },
           "productDisplayName": {
+            "value": "[parameters('apimProductName')]"
+          },
+          "productDescription": {
             "value": "[parameters('apimProductName')]"
           }
         }
@@ -164,6 +188,26 @@
         }
       }
     },
+    // {
+    //   "type": "microsoft.insights/components",
+    //   "apiVersion": "2020-02-02",
+    //   "name": "[variables('functionAppInsightsName')]",
+    //   "location": "[resourceGroup().location]",
+    //   "kind": "web",
+    //   "properties": {
+    //     "Application_Type": "web",
+    //     "Flow_Type": "Redfield",
+    //     "Request_Source": "Custom",
+    //     "RetentionInDays": 90,
+    //     "WorkspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]",
+    //     "IngestionMode": "LogAnalytics",
+    //     "publicNetworkAccessForIngestion": "Enabled",
+    //     "publicNetworkAccessForQuery": "Enabled"
+    //   },
+    //   "dependsOn": [
+    //     "[variables('logAnalyticsWorkspaceName')]"
+    //   ]
+    // },
     {
 
       "name": "[variables('functionAppName')]",
@@ -176,7 +220,7 @@
       },
       "properties": {
         "httpsOnly": true,
-        "serverFarmId":"[variables('appServicePlanId')]",
+        "serverFarmId": "[variables('appServicePlanId')]",
         "siteConfig": {
           "appSettings": [
             {
@@ -210,6 +254,10 @@
             {
               "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
               "value": "[reference(variables('functionAppInsightsName')).outputs.InstrumentationKey.value]"
+            },
+            {
+              "name": "MICROSOFT_PROVIDER_AUTHENTICATION_SECRET",
+              "value": "[parameters('clientSecret')]"
             }
           ]
         }
@@ -218,6 +266,104 @@
         "[variables('functionAppInsightsName')]",
         "[variables('appServicePlanName')]"
       ]
+    },
+    {
+      "name": "[concat(variables('functionAppName'), '/authsettingsV2')]",
+      "type": "Microsoft.Web/sites/config",
+      "apiVersion": "2020-12-01",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[variables('functionAppName')]"
+      ],
+      "properties": {
+        "platform": {
+          "enabled": true,
+          "runtimeVersion": "~1"
+        },
+        "globalValidation": {
+          "requireAuthentication": true,
+          "unauthenticatedClientAction": "RedirectToLoginPage",
+          "redirectToProvider": "azureactivedirectory"
+        },
+        "identityProviders": {
+          "azureActiveDirectory": {
+            "enabled": true,
+            "registration": {
+              "openIdIssuer": "[concat('https://sts.windows.net/',tenant().tenantId,'/v2.0')]",
+              "clientId": "[parameters('clientId')]",
+              "clientSecretSettingName": "MICROSOFT_PROVIDER_AUTHENTICATION_SECRET"
+            },
+            "login": {
+              "disableWWWAuthenticate": false
+            },
+            "validation": {
+              "jwtClaimChecks": {},
+              "allowedAudiences": [],
+              "defaultAuthorizationPolicy": {
+                "allowedPrincipals": {}
+              }
+            }
+          },
+          "facebook": {
+            "enabled": true,
+            "registration": {},
+            "login": {}
+          },
+          "gitHub": {
+            "enabled": true,
+            "registration": {},
+            "login": {}
+          },
+          "google": {
+            "enabled": true,
+            "registration": {},
+            "login": {},
+            "validation": {}
+          },
+          "twitter": {
+            "enabled": true,
+            "registration": {}
+          },
+          "legacyMicrosoftAccount": {
+            "enabled": true,
+            "registration": {},
+            "login": {},
+            "validation": {}
+          },
+          "apple": {
+            "enabled": true,
+            "registration": {},
+            "login": {}
+          }
+        },
+        "login": {
+          "routes": {},
+          "tokenStore": {
+            "enabled": true,
+            "tokenRefreshExtensionHours": 72,
+            "fileSystem": {},
+            "azureBlobStorage": {}
+          },
+          "preserveUrlFragmentsForLogins": false,
+          "cookieExpiration": {
+            "convention": "FixedTime",
+            "timeToExpiration": "08:00:00"
+          },
+          "nonce": {
+            "validateNonce": true,
+            "nonceExpirationInterval": "00:05:00"
+          }
+        },
+        "httpSettings": {
+          "requireHttps": true,
+          "routes": {
+            "apiPrefix": "/.auth"
+          },
+          "forwardProxy": {
+            "convention": "NoProxy"
+          }
+        }
+      }
     },
     {
       "apiVersion": "2019-05-01",
