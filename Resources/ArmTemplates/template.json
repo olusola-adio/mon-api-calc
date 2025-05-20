@@ -553,7 +553,5 @@
         "[variables('AppServicePlanName')]"
       ]
     }
-  ],
-  "outputs": {
-  }
+  ]
 }
