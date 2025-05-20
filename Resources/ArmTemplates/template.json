@@ -61,20 +61,20 @@
     "ActionGroupName": "[concat('mon-', tolower(parameters('Environment')), '-app-sharedresources-actgrp')]"
   },
   "resources": [
-    {
-      "type": "Microsoft.OperationalInsights/workspaces",
-      "name": "[variables('logAnalyticsWorkspaceName')]",
-      "apiVersion": "2020-08-01",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "resourceGroup": {
-          "name": "[resourceGroup().name]"
-        },
-        "sku": {
-          "name": "pergb2018"
-        }
-      }
-    },
+    // {
+    //   "type": "Microsoft.OperationalInsights/workspaces",
+    //   "name": "[variables('logAnalyticsWorkspaceName')]",
+    //   "apiVersion": "2020-08-01",
+    //   "location": "[resourceGroup().location]",
+    //   "properties": {
+    //     "resourceGroup": {
+    //       "name": "[resourceGroup().name]"
+    //     },
+    //     "sku": {
+    //       "name": "pergb2018"
+    //     }
+    //   }
+    // },
     {
       "name": "[concat('apim-logger-', parameters('apimLoggerName'))]",
       "type": "Microsoft.Resources/deployments",
